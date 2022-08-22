@@ -1,8 +1,8 @@
 #pragma once
 
-#include "material.h"
+#include "material/material.h"
 #include "arr3.h"
-#include "scattered_record.h"
+#include "struct/scattered_record.h"
 
 class lambertian : public material
 {

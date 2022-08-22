@@ -3,11 +3,11 @@
 #include <memory>
 
 #include "arr3.h"
-#include "material.h"
-#include "shape.h"
-#include "hit_record.h"
-#include "scattered_record.h"
-#include "hit_result.h"
+#include "material/material.h"
+#include "shape/shape.h"
+#include "struct/hit_record.h"
+#include "struct/scattered_record.h"
+#include "struct/hit_result.h"
 
 using std::shared_ptr;
 

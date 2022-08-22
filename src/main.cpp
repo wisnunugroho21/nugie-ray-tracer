@@ -2,14 +2,14 @@
 
 #include "arr3.h"
 #include "ray.h"
-#include "sphere.h"
-#include "gameobject_list.h"
-#include "camera.h"
+#include "shape/sphere.h"
+#include "hittable/gameobject_list.h"
+#include "camera/camera.h"
 #include "helper.h"
-#include "lambertian.h"
-#include "metal.h"
-#include "dielectric.h"
-#include "hit_result.h"
+#include "material/lambertian.h"
+#include "material/metal.h"
+#include "material/dielectric.h"
+#include "struct/hit_result.h"
 
 #include <iostream>
 

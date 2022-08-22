@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ray.h"
-#include "hit_record.h"
+#include "struct/hit_record.h"
 
 class shape
 {

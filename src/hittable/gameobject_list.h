@@ -3,8 +3,8 @@
 #include <memory>
 #include <vector>
 
-#include "hit_result.h"
-#include "gameobject.h"
+#include "struct/hit_result.h"
+#include "hittable/gameobject.h"
 
 using std::shared_ptr;
 using std::vector;

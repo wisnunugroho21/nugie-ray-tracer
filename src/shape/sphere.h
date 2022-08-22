@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include "shape.h"
+#include "shape/shape.h"
 #include "arr3.h"
-#include "material.h"
-#include "hit_face_normal.h"
+#include "material/material.h"
+#include "struct/hit_face_normal.h"
 
 using std::shared_ptr;
 

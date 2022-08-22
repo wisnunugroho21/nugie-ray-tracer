@@ -2,10 +2,10 @@
 
 #include <math.h>
 
-#include "material.h"
+#include "material/material.h"
 #include "arr3.h"
 #include "helper.h"
-#include "scattered_record.h"
+#include "struct/scattered_record.h"
 
 class dielectric : public material
 {

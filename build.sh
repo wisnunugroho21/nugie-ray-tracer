@@ -8,7 +8,7 @@ assembly="engine"
 compilerFlags=""
 # -fms-extensions 
 # -Wall -Werror
-includeFlags=""
+includeFlags="-Isrc"
 linkerFlags=""
 defines=""
 
