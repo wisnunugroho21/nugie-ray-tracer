@@ -12,6 +12,7 @@
 #include "struct/hit_result.h"
 #include "hittable/bvh.h"
 #include "hittable/hittable.h"
+#include "texture/checker.h"
 
 #include <iostream>
 
@@ -20,7 +21,8 @@ using std::make_shared;
 hittable_list random_scenes() {
     hittable_list world;
 
-    shared_ptr<lambertian> mat_ground = make_shared<lambertian>(color(0.5, 0.5, 0.5));
+    shared_ptr<checker> text_ground = make_shared<checker>(color(0.2, 0.3, 0.1), color(0, 0, 0));
+    shared_ptr<lambertian> mat_ground = make_shared<lambertian>(text_ground);
     shared_ptr<sphere> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
     world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
