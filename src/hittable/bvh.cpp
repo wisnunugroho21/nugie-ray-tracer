@@ -73,13 +73,7 @@ bool bvh_node::box_compare(shared_ptr<hittable> a, shared_ptr<hittable> b, int a
     bounding_record bound_a = a->bounding_box();
     bounding_record bound_b = b->bounding_box();
 
-    if (axis == 0) {
-        return bound_a.bounding_box.min().e1() < bound_b.bounding_box.min().e1();
-    } else if (axis == 1) {
-        return bound_a.bounding_box.min().e2() < bound_b.bounding_box.min().e2();
-    } else {
-        return bound_a.bounding_box.min().e3() < bound_b.bounding_box.min().e3();
-    }    
+    return bound_a.bounding_box.min()[axis] < bound_b.bounding_box.min()[axis];
 }
 
 bool bvh_node::box_compare_x(shared_ptr<hittable> a, shared_ptr<hittable> b) {
