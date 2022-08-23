@@ -4,10 +4,9 @@
 
 class arr3
 {
-private:
+public:
     double e[3];
 
-public:
     arr3();
     arr3(double e1, double e2, double e3);
 

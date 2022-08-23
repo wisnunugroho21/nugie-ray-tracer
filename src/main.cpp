@@ -3,20 +3,22 @@
 #include "arr3.h"
 #include "ray.h"
 #include "shape/sphere.h"
-#include "hittable/gameobject_list.h"
+#include "hittable/hittable_list.h"
 #include "camera/camera.h"
 #include "helper.h"
 #include "material/lambertian.h"
 #include "material/metal.h"
 #include "material/dielectric.h"
 #include "struct/hit_result.h"
+#include "hittable/bvh.h"
+#include "hittable/hittable.h"
 
 #include <iostream>
 
 using std::make_shared;
 
-gameobject_list random_scenes() {
-    gameobject_list world;
+hittable_list random_scenes() {
+    hittable_list world;
 
     shared_ptr<lambertian> mat_ground = make_shared<lambertian>(color(0.5, 0.5, 0.5));
     shared_ptr<sphere> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
@@ -87,7 +89,7 @@ void write_color(std::ostream &out, color pixel_color, int sample_per_pixel) {
         << static_cast<int>(256 * clamp(b, 0, 0.999)) << "\n";
 }
 
-color ray_color(ray &r, gameobject_list world, int depth) {
+color ray_color(ray r, hittable &world, int depth) {
     if (depth <= 0)
         return color(0, 0, 0);
 
@@ -106,14 +108,15 @@ int main(int argc, char const *argv[]) {
 
     // ----- Image ----- //
 
-    int depth = 40;
+    int depth = 30;
     int sample_per_pixel = 100;
     double aspect_ratio = 3.0 / 2.0;
     int image_width = 1200;
     int image_height = static_cast<int> (image_width / aspect_ratio);
 
     // ----- World ----- //
-    gameobject_list world = random_scenes();
+    hittable_list list = random_scenes();
+    bvh_node world(list);
 
     // ----- Camera ----- //
 

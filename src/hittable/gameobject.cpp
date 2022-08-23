@@ -23,3 +23,7 @@ hit_result gameobject::hit(ray r, double t_min, double t_max) {
 
     return res;
 }
+
+bounding_record gameobject::bounding_box() {
+    return this->object_shape->bounding_box();
+}

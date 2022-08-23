@@ -63,3 +63,15 @@ hit_face_normal sphere::set_hit_face_normal(ray r, double t) {
 
     return hitted_ray;
 }
+
+bounding_record sphere::bounding_box() {
+    bounding_record bound;
+
+    bound.is_hit = true;
+    bound.bounding_box = aabb(
+        this->center - vector3(this->radius, this->radius, this->radius),
+        this->center + vector3(this->radius, this->radius, this->radius)
+    );
+
+    return bound;
+}
