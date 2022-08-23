@@ -1,16 +1,22 @@
 #pragma once
 
 #include <math.h>
+#include <memory>
 
 #include "material/material.h"
 #include "arr3.h"
 #include "helper.h"
 #include "struct/scattered_record.h"
+#include "texture/texture.h"
+#include "texture/solid_color.h"
+
+using namespace std;
 
 class dielectric : public material
 {
 private:
     double ir;
+    shared_ptr<texture> albedo;
 
 protected:
     vector3 reflect(vector3 v, vector3 n);
@@ -18,6 +24,9 @@ protected:
     double reflectance(double cosine, double ref_idx);
 
 public:
-    dielectric(double index_of_refraction);    
+    dielectric(double index_of_refraction);
+    dielectric(shared_ptr<texture> albedo, double index_of_refraction);
+    dielectric(color c, double index_of_refraction);
+
     scattered_record scatter(ray r_in, hit_record hit) override;
 };

@@ -1,7 +1,6 @@
 #include <math.h>
 
 #include "sphere.h"
-#include <iostream>
 
 sphere::sphere() : shape()
 {
@@ -43,10 +42,14 @@ hit_record sphere::hit(ray r, double t_min, double t_max)
         hit.t = root;
 
         hit_face_normal hitted_ray = this->set_hit_face_normal(r, hit.t);
+        texture_coordinate txc = this->get_uv(hitted_ray.normal);
 
         hit.p = hitted_ray.p;
         hit.front_face = hitted_ray.front_face;
         hit.normal = hitted_ray.normal;
+
+        hit.u = txc.u;
+        hit.v = txc.v;
     }
 
     return hit;
@@ -74,4 +77,16 @@ bounding_record sphere::bounding_box() {
     );
 
     return bound;
+}
+
+texture_coordinate sphere::get_uv(point3 p) {
+    texture_coordinate txc;
+
+    auto theta = acos(-p.y());
+    auto phi = atan2(-p.z(), p.x()) + pi;
+
+    txc.u = phi / (2 * pi);
+    txc.v = theta / pi;
+
+    return txc;
 }

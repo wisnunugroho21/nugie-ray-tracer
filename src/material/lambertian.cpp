@@ -1,7 +1,11 @@
 #include "lambertian.h"
 
-lambertian::lambertian(color albedo) {
+lambertian::lambertian(shared_ptr<texture> albedo) {
     this->albedo = albedo;
+}
+
+lambertian::lambertian(color c) {
+    this->albedo = make_shared<solid_color>(c);
 }
 
 scattered_record lambertian::scatter(ray r_in, hit_record hit) {
@@ -13,7 +17,7 @@ scattered_record lambertian::scatter(ray r_in, hit_record hit) {
     }
 
     scat.scattered = ray(hit.p, scatter_direction);
-    scat.attenuation = this->albedo;
+    scat.attenuation = this->albedo->value(hit.u, hit.v, hit.p);
     scat.is_scatter = true;
     
     return scat;

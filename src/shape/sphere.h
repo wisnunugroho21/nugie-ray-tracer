@@ -8,6 +8,7 @@
 #include "material/material.h"
 #include "struct/hit_face_normal.h"
 #include "struct/bounding_record.h"
+#include "struct/texture_coordinate.h"
 
 using std::shared_ptr;
 
@@ -25,4 +26,5 @@ public:
     bounding_record bounding_box() override;
 
     hit_face_normal set_hit_face_normal(ray r, double t);
+    texture_coordinate get_uv(point3 p);
 };

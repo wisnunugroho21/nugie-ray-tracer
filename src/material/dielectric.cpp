@@ -2,6 +2,17 @@
 
 dielectric::dielectric(double index_of_refraction) {
     this->ir = index_of_refraction;
+    this->albedo = make_shared<solid_color>(color(1.0, 1.0, 1.0));
+}
+
+dielectric::dielectric(shared_ptr<texture> albedo, double index_of_refraction) {
+    this->ir = index_of_refraction;
+    this->albedo = albedo;
+}
+
+dielectric::dielectric(color c, double index_of_refraction) {
+    this->ir = index_of_refraction;
+    this->albedo = make_shared<solid_color>(c);
 }
 
 vector3 dielectric::reflect(vector3 v, vector3 n) {
@@ -36,7 +47,7 @@ scattered_record dielectric::scatter(ray r_in, hit_record hit) {
 
     scat.scattered = ray(hit.p, direction);
     scat.is_scatter = true;
-    scat.attenuation = color(1.0, 1.0, 1.0);
+    scat.attenuation = this->albedo->value(hit.u, hit.v, hit.p);
 
     return scat;
 }

@@ -10,4 +10,7 @@ struct hit_record
 
     vector3 normal;
     bool front_face;
+
+    double u;
+    double v;
 };
