@@ -14,9 +14,10 @@ using std::vector;
 
 class hittable_list : public hittable
 {
-public:
+private:
     vector<shared_ptr<hittable>> objects;
-
+    
+public:
     hittable_list();
     hittable_list(shared_ptr<hittable> object);
 

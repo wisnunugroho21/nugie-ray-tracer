@@ -115,6 +115,7 @@ int main(int argc, char const *argv[]) {
     int image_height = static_cast<int> (image_width / aspect_ratio);
 
     // ----- World ----- //
+    
     hittable_list list = random_scenes();
     bvh_node world(list);
 
