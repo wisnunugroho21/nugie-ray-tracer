@@ -14,6 +14,7 @@
 #include "hittable/hittable.h"
 #include "texture/checker.h"
 #include "material/diffuse_light.h"
+#include "shape/xz_rect.h"
 
 #include <iostream>
 
@@ -23,12 +24,12 @@ hittable_list random_scenes() {
     hittable_list world;
 
     shared_ptr<material> light_mat = make_shared<diffuse_light>(color(2, 2, 2));
-    shared_ptr<sphere> light_shp = make_shared<sphere>(point3(-2, 4, 0), 1);
+    shared_ptr<shape> light_shp = make_shared<xz_rect>(3, 5, 1, 3, 3.5);
     world.add(make_shared<gameobject>(light_shp, light_mat));
 
     shared_ptr<checker> text_ground = make_shared<checker>(color(0.2, 0.3, 0.1), color(0, 0, 0));
     shared_ptr<lambertian> mat_ground = make_shared<lambertian>(text_ground);
-    shared_ptr<sphere> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
+    shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
     world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
     for (int a = -11; a < 11; a++) {
@@ -38,7 +39,7 @@ hittable_list random_scenes() {
 
             if ((center - point3(4, 0.2, 0)).length() > 0.9) {
                 shared_ptr<material> obj_mat;
-                shared_ptr<sphere> obj_shape;
+                shared_ptr<shape> obj_shape;
 
                 if (chosen_mat < 0.8) {
                     color albedo = color::random() * color::random();
@@ -66,15 +67,15 @@ hittable_list random_scenes() {
     }
 
     shared_ptr<material> mat1 = make_shared<dielectric>(1.5);
-    shared_ptr<sphere> shp1 = make_shared<sphere>(point3(0, 1, 0), 1.0);
+    shared_ptr<shape> shp1 = make_shared<sphere>(point3(0, 1, 0), 1.0);
     world.add(make_shared<gameobject>(shp1, mat1));
 
     shared_ptr<material> mat2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
-    shared_ptr<sphere> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1.0);
+    shared_ptr<shape> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1.0);
     world.add(make_shared<gameobject>(shp2, mat2));
 
     shared_ptr<material> mat3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.1);
-    shared_ptr<sphere> shp3 = make_shared<sphere>(point3(4, 1, 0), 1.0);
+    shared_ptr<shape> shp3 = make_shared<sphere>(point3(4, 1, 0), 1.0);
     world.add(make_shared<gameobject>(shp3, mat3));
 
     return world;
