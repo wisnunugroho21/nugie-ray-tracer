@@ -23,8 +23,8 @@ using std::make_shared;
 hittable_list random_scenes() {
     hittable_list world;
 
-    shared_ptr<material> light_mat = make_shared<diffuse_light>(color(2, 2, 2));
-    shared_ptr<shape> light_shp = make_shared<xz_rect>(3, 5, 1, 3, 3.5);
+    shared_ptr<material> light_mat = make_shared<diffuse_light>(color(4, 4, 4));
+    shared_ptr<shape> light_shp = make_shared<xz_rect>(-2, 2, -1, 1, 4);
     world.add(make_shared<gameobject>(light_shp, light_mat));
 
     shared_ptr<checker> text_ground = make_shared<checker>(color(0.2, 0.3, 0.1), color(0, 0, 0));
@@ -67,15 +67,15 @@ hittable_list random_scenes() {
     }
 
     shared_ptr<material> mat1 = make_shared<dielectric>(1.5);
-    shared_ptr<shape> shp1 = make_shared<sphere>(point3(0, 1, 0), 1.0);
+    shared_ptr<shape> shp1 = make_shared<sphere>(point3(0, 1, 0), 1);
     world.add(make_shared<gameobject>(shp1, mat1));
 
     shared_ptr<material> mat2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
-    shared_ptr<shape> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1.0);
+    shared_ptr<shape> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1);
     world.add(make_shared<gameobject>(shp2, mat2));
 
     shared_ptr<material> mat3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.1);
-    shared_ptr<shape> shp3 = make_shared<sphere>(point3(4, 1, 0), 1.0);
+    shared_ptr<shape> shp3 = make_shared<sphere>(point3(4, 1, 0), 1);
     world.add(make_shared<gameobject>(shp3, mat3));
 
     return world;
