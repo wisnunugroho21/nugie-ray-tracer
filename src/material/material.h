@@ -7,5 +7,6 @@
 class material
 {
 public:
+    virtual color emitted(double u, double v, point3 p);
     virtual scattered_record scatter(ray r_in, hit_record hit) = 0;
 };

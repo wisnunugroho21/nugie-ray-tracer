@@ -5,6 +5,10 @@
 
 struct hit_result {
     bool is_hit = false;
-    color attenuation;
+    bool is_scatter = false;
+    
     ray scattered;
+
+    color attenuation;
+    color emitted;    
 };

@@ -12,12 +12,13 @@ hit_result gameobject::hit(ray r, double t_min, double t_max) {
     res.is_hit = hit.is_hit;
 
     if (hit.is_hit) {
-        scattered_record scat = this->object_material->scatter(r, hit);        
-        res.is_hit = scat.is_scatter;
+        scattered_record scat = this->object_material->scatter(r, hit);
+        res.emitted = this->object_material->emitted(hit.u, hit.v, hit.p);        
+        res.is_scatter = scat.is_scatter;        
 
         if (scat.is_scatter) {   
             res.attenuation = scat.attenuation;
-            res.scattered = scat.scattered;
+            res.scattered = scat.scattered;            
         }
     }
 

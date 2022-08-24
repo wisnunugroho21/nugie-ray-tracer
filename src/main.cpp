@@ -13,6 +13,7 @@
 #include "hittable/bvh.h"
 #include "hittable/hittable.h"
 #include "texture/checker.h"
+#include "material/diffuse_light.h"
 
 #include <iostream>
 
@@ -20,6 +21,10 @@ using std::make_shared;
 
 hittable_list random_scenes() {
     hittable_list world;
+
+    shared_ptr<material> light_mat = make_shared<diffuse_light>(color(2, 2, 2));
+    shared_ptr<sphere> light_shp = make_shared<sphere>(point3(-2, 4, 0), 1);
+    world.add(make_shared<gameobject>(light_shp, light_mat));
 
     shared_ptr<checker> text_ground = make_shared<checker>(color(0.2, 0.3, 0.1), color(0, 0, 0));
     shared_ptr<lambertian> mat_ground = make_shared<lambertian>(text_ground);
@@ -91,19 +96,20 @@ void write_color(std::ostream &out, color pixel_color, int sample_per_pixel) {
         << static_cast<int>(256 * clamp(b, 0, 0.999)) << "\n";
 }
 
-color ray_color(ray r, hittable &world, int depth) {
+color ray_color(ray r, color background, hittable &world, int depth) {    
     if (depth <= 0)
         return color(0, 0, 0);
 
     hit_result res = world.hit(r, 0.001, infinity);
-    if (res.is_hit) {
-        return res.attenuation * ray_color(res.scattered , world, depth - 1);
+    if (!res.is_hit) {
+        return background;
     }
 
-    vector3 unit_vector = r.direction().unit_vector();
-    double target = 0.5 * (unit_vector.y() + 1.0);
+    if (!res.is_scatter) {
+        return res.emitted;
+    }
 
-    return (1.0 - target) * color(1.0, 1.0, 1.0) + target * color(0.5, 0.7, 1.0);
+    return res.emitted + res.attenuation * ray_color(res.scattered, background, world, depth - 1);
 }
 
 int main(int argc, char const *argv[]) {  
@@ -112,9 +118,10 @@ int main(int argc, char const *argv[]) {
 
     int depth = 30;
     int sample_per_pixel = 100;
-    double aspect_ratio = 3.0 / 2.0;
-    int image_width = 1200;
+    double aspect_ratio = 16.0 / 9.0;
+    int image_width = 1280;
     int image_height = static_cast<int> (image_width / aspect_ratio);
+    color background(0, 0, 0);
 
     // ----- World ----- //
     
@@ -146,7 +153,7 @@ int main(int argc, char const *argv[]) {
                 double v = double(j + random_double()) / (image_height - 1);
 
                 ray r = cam.get_ray(u, v);
-                pixel_color = ray_color(r, world, depth) + pixel_color;
+                pixel_color = ray_color(r, background, world, depth) + pixel_color;
             }
             
             write_color(std::cout, pixel_color, sample_per_pixel);
