@@ -8,6 +8,7 @@ struct hit_result {
     bool is_scatter = false;
     
     ray scattered;
+    double t;
 
     color attenuation;
     color emitted;    

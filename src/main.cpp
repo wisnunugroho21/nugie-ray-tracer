@@ -14,11 +14,49 @@
 #include "hittable/hittable.h"
 #include "texture/checker.h"
 #include "material/diffuse_light.h"
+#include "shape/xy_rect.h"
+#include "shape/yz_rect.h"
 #include "shape/xz_rect.h"
+#include "shape/box.h"
 
 #include <iostream>
 
 using std::make_shared;
+
+hittable_list cornell_box() {
+    hittable_list objects;
+
+    auto red = make_shared<lambertian>(color(0.65, 0.05, 0.05));
+    auto green = make_shared<lambertian>(color(0.12, 0.45, 0.15));
+    auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
+    auto light = make_shared<diffuse_light>(color(10, 10, 10));
+
+    auto rect1 = make_shared<yz_rect>(0, 555, 0, 555, 555);
+    objects.add(make_shared<gameobject>(rect1, green));
+
+    auto rect2 = make_shared<yz_rect>(0, 555, 0, 555, 0);
+    objects.add(make_shared<gameobject>(rect2, red));
+
+    auto rect3 = make_shared<xz_rect>(213, 343, 227, 332, 554);
+    objects.add(make_shared<gameobject>(rect3, light));
+
+    auto rect4 = make_shared<xz_rect>(0, 555, 0, 555, 0);
+    objects.add(make_shared<gameobject>(rect4, white));
+
+    auto rect5 = make_shared<xz_rect>(0, 555, 0, 555, 555);
+    objects.add(make_shared<gameobject>(rect5, white));
+
+    auto rect6 = make_shared<xy_rect>(0, 555, 0, 555, 555);
+    objects.add(make_shared<gameobject>(rect6, white));
+
+    auto rect7 = make_shared<box>(point3(130, 0, 65), point3(295, 165, 230));
+    objects.add(make_shared<gameobject>(rect7, white));
+
+    auto rect8 = make_shared<box>(point3(265, 0, 295), point3(430, 330, 460));
+    objects.add(make_shared<gameobject>(rect8, white));
+
+    return objects;
+}
 
 hittable_list random_scenes() {
     hittable_list world;
@@ -117,27 +155,40 @@ int main(int argc, char const *argv[]) {
 
     // ----- Image ----- //
 
-    int depth = 30;
+    /* int depth = 30;
     int sample_per_pixel = 100;
     double aspect_ratio = 16.0 / 9.0;
     int image_width = 1280;
+    int image_height = static_cast<int> (image_width / aspect_ratio);
+    color background(0, 0, 0); */
+
+    int depth = 50;
+    int sample_per_pixel = 200;
+    double aspect_ratio = 1;
+    int image_width = 600;
     int image_height = static_cast<int> (image_width / aspect_ratio);
     color background(0, 0, 0);
 
     // ----- World ----- //
     
-    hittable_list list = random_scenes();
+    hittable_list list = cornell_box(); //random_scenes();
     bvh_node world(list);
 
     // ----- Camera ----- //
 
-    point3 lookfrom(13, 2, 3);
+    /* point3 lookfrom(13, 2, 3);
     point3 lookto(0, 0, 0);
     vector3 vup(0, 1, 0);
     double dist_to_focus = 10.0;
-    double aperture = 0.1;
+    double aperture = 0.1; */
 
-    camera cam = camera(lookfrom, lookto, vup, 20, aspect_ratio, aperture, dist_to_focus);
+    point3 lookfrom(278, 278, -800);
+    point3 lookto(278, 278, 0);
+    vector3 vup(0, 1, 0);
+    double dist_to_focus = 10.0;
+    double aperture = 0;
+
+    camera cam = camera(lookfrom, lookto, vup, 40, aspect_ratio, aperture, dist_to_focus);
 
     // ----- Render ----- //
 

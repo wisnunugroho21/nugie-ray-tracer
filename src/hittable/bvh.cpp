@@ -54,19 +54,24 @@ bounding_record bvh_node::bounding_box() {
 }
 
 hit_result bvh_node::hit(ray r, double t_min, double t_max) {
-    hit_result res;
+    hit_result fail_hit;
 
     if (!this->box.hit(r, t_min, t_max)) {
-        return res;
-    }
-    
-    res = this->right->hit(r, t_min, t_max);
-    if (res.is_hit) {
-        return res;
+        return fail_hit;
     }
 
-    res = this->left->hit(r, t_min, t_max);
-    return res;
+    hit_result left_hit = this->left->hit(r, t_min, t_max);    
+    hit_result right_hit = this->right->hit(r, t_min, left_hit.is_hit ? left_hit.t : t_max);
+
+    if (right_hit.is_hit) {
+        return right_hit;
+    } 
+    
+    if (left_hit.is_hit) {
+        return left_hit;
+    }
+    
+    return fail_hit;
 }
 
 bool bvh_node::box_compare(shared_ptr<hittable> a, shared_ptr<hittable> b, int axis) {
