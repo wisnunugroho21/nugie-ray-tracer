@@ -31,6 +31,7 @@ public:
     hit_result hit(ray r, double t_min, double t_max) override;
     bounding_record bounding_box() override;
 
+    static int find_best_axis(vector<shared_ptr<hittable>> src_objects);
     static bool box_compare(shared_ptr<hittable> a, shared_ptr<hittable> b, int axis);
     static bool box_compare_x(shared_ptr<hittable> a, shared_ptr<hittable> b);
     static bool box_compare_y(shared_ptr<hittable> a, shared_ptr<hittable> b);

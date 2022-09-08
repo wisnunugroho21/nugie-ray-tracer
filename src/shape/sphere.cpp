@@ -2,19 +2,16 @@
 
 #include "sphere.h"
 
-sphere::sphere() : shape()
-{
+sphere::sphere() : shape() {
 
 }
 
-sphere::sphere(point3 center, double radius) : shape()
-{
+sphere::sphere(point3 center, double radius) : shape() {
     this->center = center;
     this->radius = radius;
 }
 
-hit_record sphere::hit(ray r, double t_min, double t_max)
-{
+hit_record sphere::hit(ray r, double t_min, double t_max) {
     vector3 oc = r.origin() - this->center;
 
     double a = dot(r.direction(), r.direction());
@@ -24,7 +21,7 @@ hit_record sphere::hit(ray r, double t_min, double t_max)
     double discriminant = b * b - 4 * a * c;
 
     hit_record hit;
-    double root;
+    double root = 0.0;
 
     if (discriminant >= 0) {
         hit.is_hit = true;

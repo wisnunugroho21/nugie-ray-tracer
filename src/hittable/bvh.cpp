@@ -6,8 +6,10 @@ bvh_node::bvh_node() {
 
 }
 
-bvh_node::bvh_node(vector<shared_ptr<hittable>> objects) {
-    int axis = rand_int(0, 2);
+bvh_node::bvh_node(vector<shared_ptr<hittable>> src_objects) {
+    vector<shared_ptr<hittable>> objects = src_objects;
+
+    int axis = bvh_node::find_best_axis(objects);
     auto comparator = (axis == 0) ? bvh_node::box_compare_x
                     : (axis == 1) ? bvh_node::box_compare_y
                                 : bvh_node::box_compare_z;
@@ -72,6 +74,30 @@ hit_result bvh_node::hit(ray r, double t_min, double t_max) {
     }
     
     return fail_hit;
+}
+
+int bvh_node::find_best_axis(vector<shared_ptr<hittable>> src_objects)
+{
+    vector<shared_ptr<hittable>> objects = src_objects;
+
+    std::sort(objects.begin(), objects.end(), bvh_node::box_compare_x);
+    auto length_x = objects[objects.size() - 1]->bounding_box().bounding_box.min().x() - objects[0]->bounding_box().bounding_box.min().x();
+
+    std::sort(objects.begin(), objects.end(), bvh_node::box_compare_y);
+    auto length_y = objects[objects.size() - 1]->bounding_box().bounding_box.min().y() - objects[0]->bounding_box().bounding_box.min().y();
+
+    std::sort(objects.begin(), objects.end(), bvh_node::box_compare_z);
+    auto length_z = objects[objects.size() - 1]->bounding_box().bounding_box.min().z() - objects[0]->bounding_box().bounding_box.min().z();
+
+    if (length_x >= length_y && length_x >= length_z) {
+        return 0;
+    }
+
+    if (length_y >= length_x && length_y >= length_z) {
+        return 1;
+    }
+
+    return 2;
 }
 
 bool bvh_node::box_compare(shared_ptr<hittable> a, shared_ptr<hittable> b, int axis) {
