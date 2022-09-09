@@ -17,7 +17,7 @@ double clamp(double value, double min, double max) {
 }
 
 double degrees_to_radians(double degrees) {
-    return degrees * pi / 100.0;
+    return degrees * pi / 180.0;
 }
 
 int rand_int(int min, int max) {
