@@ -5,7 +5,7 @@
 
 #include "material/material.h"
 #include "arr3.h"
-#include "helper.h"
+#include "helper/helper.h"
 #include "struct/scattered_record.h"
 #include "texture/texture.h"
 #include "texture/solid_color.h"

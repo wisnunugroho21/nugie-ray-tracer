@@ -15,4 +15,4 @@ defines=""
 echo "Building $assembly..."
 
 rm -rf ./main ./image.ppm
-clang++ $cFilenames $compilerFlags -o main $defines $includeFlags $linkerFlags
+clang++ $cFilenames $compilerFlags -o main $defines $includeFlags $linkerFlags -std=c++11

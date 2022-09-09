@@ -4,7 +4,7 @@
 
 #include "arr3.h"
 #include "ray.h"
-#include "helper.h"
+#include "helper/helper.h"
 
 class camera
 {

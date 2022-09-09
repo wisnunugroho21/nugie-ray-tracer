@@ -9,7 +9,7 @@
 #include "hittable/hittable_list.h"
 #include "struct/bounding_record.h"
 #include "struct/hit_result.h"
-#include "helper.h"
+#include "helper/helper.h"
 
 using std::shared_ptr;
 using std::vector;

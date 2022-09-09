@@ -5,7 +5,7 @@
 #include "shape/sphere.h"
 #include "hittable/hittable_list.h"
 #include "camera/camera.h"
-#include "helper.h"
+#include "helper/helper.h"
 #include "material/lambertian.h"
 #include "material/metal.h"
 #include "material/dielectric.h"
@@ -13,6 +13,7 @@
 #include "hittable/bvh.h"
 #include "hittable/hittable.h"
 #include "texture/checker.h"
+#include "texture/image_texture.h"
 #include "material/diffuse_light.h"
 #include "shape/xy_rect.h"
 #include "shape/yz_rect.h"
@@ -269,6 +270,17 @@ hittable_list mirror_random_scenes() {
 	return world;
 }
 
+hittable_list earth() {
+	hittable_list world;
+
+	shared_ptr<texture> text_ground = make_shared<image_texture>("map.jpg");
+	shared_ptr<material> mat_ground = make_shared<lambertian>(text_ground);
+	shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0,0,0), 2);
+	world.add(make_shared<gameobject>(shp_ground, mat_ground));
+
+    return world;
+}
+
 void write_color(std::ofstream& ofl, color pixel_color, int sample_per_pixel) {
 	double r = pixel_color.r();
 	double g = pixel_color.g();
@@ -303,10 +315,10 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 
 int main(int argc, char const* argv[]) {
 
-	int depth = 20;
-	int sample_per_pixel = 50;
+	int depth = 10;
+	int sample_per_pixel = 10;
 	double aspect_ratio = 1.0;
-	int image_width = 500;
+	int image_width = 300;
 	int image_height = static_cast<int> (image_width / aspect_ratio);
 
 	hittable_list list;
@@ -319,7 +331,7 @@ int main(int argc, char const* argv[]) {
 	auto aperture = 0.0;
 	auto dist_to_focus = 10.0;
 
-	switch (3)
+	switch (5)
 	{
 		case 0:
 			list = random_scenes();
@@ -361,21 +373,29 @@ int main(int argc, char const* argv[]) {
 			vpov = 20.0;
 			aperture = 0;
 			break;
+		case 5:
+			list = earth();
+			background = color(0.7, 0.8, 1.0);
+			lookfrom = point3(13, 2, 3);
+			lookto = point3(0, 0, 0);
+			vpov = 20.0;
+			aperture = 0;
+			break;
 
 		default:
 			break;
 	}
 
 	// ----- World ----- //    
-	hittable_list world = list;
-	// bvh_node world(list);
+	// hittable_list world = list;
+	bvh_node world(list);
 
 	// ----- Camera ----- //
 	camera cam = camera(lookfrom, lookto, vup, vpov, aspect_ratio, aperture, dist_to_focus);
 
 	// ----- Render ----- //
 
-	std::ofstream outfile("image4.ppm");
+	std::ofstream outfile("image.ppm");
 	outfile << "P3\n" << image_width << " " << image_height << "\n255\n";
 
 	std::cerr << image_height;
