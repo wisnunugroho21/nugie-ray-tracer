@@ -5,7 +5,7 @@
 #include "ray.h"
 #include "struct/hit_record.h"
 #include "struct/bounding_record.h"
-#include "shape/shape.h"
+#include "hittable/shape/shape.h"
 #include "struct/hit_face_normal.h"
 #include "struct/bounding_record.h"
 #include "struct/texture_coordinate.h"

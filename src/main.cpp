@@ -2,24 +2,28 @@
 
 #include "arr3.h"
 #include "ray.h"
-#include "shape/sphere.h"
-#include "hittable/hittable_list.h"
+
 #include "camera/camera.h"
 #include "helper/helper.h"
 #include "material/lambertian.h"
 #include "material/metal.h"
 #include "material/dielectric.h"
-#include "struct/hit_result.h"
-#include "hittable/bvh.h"
-#include "hittable/hittable.h"
-#include "texture/checker.h"
 #include "material/diffuse_light.h"
-#include "shape/xy_rect.h"
-#include "shape/yz_rect.h"
-#include "shape/xz_rect.h"
-#include "shape/box.h"
-#include "transform/translate.h"
-#include "transform/rotate.h"
+#include "material/isotropic.h"
+#include "struct/hit_result.h"
+#include "texture/checker.h"
+#include "texture/image_texture.h"
+#include "hittable/hittable.h"
+#include "hittable/hittable_list.h"
+#include "hittable/bvh.h"
+#include "hittable/shape/xy_rect.h"
+#include "hittable/shape/yz_rect.h"
+#include "hittable/shape/xz_rect.h"
+#include "hittable/shape/sphere.h"
+#include "hittable/shape/box.h"
+#include "hittable/transform/translate.h"
+#include "hittable/transform/rotate.h"
+#include "hittable/volumetric/constant_medium.h"
 
 #include <iostream>
 #include <fstream>
@@ -341,6 +345,77 @@ hittable_list earth() {
 	world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
     return world;
+}
+
+hittable_list final_scene() {
+    hittable_list boxes1;
+    auto ground = make_shared<lambertian>(color(0.48, 0.83, 0.53));
+
+    const int boxes_per_side = 20;
+    for (int i = 0; i < boxes_per_side; i++) {
+        for (int j = 0; j < boxes_per_side; j++) {
+            auto w = 100.0;
+            auto x0 = -1000.0 + i*w;
+            auto z0 = -1000.0 + j*w;
+            auto y0 = 0.0;
+            auto x1 = x0 + w;
+            auto y1 = random_double(1,101);
+            auto z1 = z0 + w;
+
+			auto box1 = make_shared<box>(point3(x0,y0,z0), point3(x1,y1,z1));
+			boxes1.add(make_shared<gameobject>(box1, ground));
+        }
+    }
+
+    hittable_list objects;
+
+    objects.add(make_shared<bvh_node>(boxes1));
+
+    auto light = make_shared<diffuse_light>(color(7, 7, 7));
+	auto rect1 = make_shared<xz_rect>(123, 423, 147, 412, 554);
+	objects.add(make_shared<gameobject>(rect1, light));	
+
+    auto mat1 = make_shared<lambertian>(color(0.7, 0.3, 0.1));
+	auto sphere1 = make_shared<sphere>(point3(400, 400, 200), 50);
+	objects.add(make_shared<gameobject>(sphere1, mat1));
+
+	auto mat2 = make_shared<dielectric>(1.5);
+	auto sphere2 = make_shared<sphere>(point3(260, 150, 45), 50);
+	objects.add(make_shared<gameobject>(sphere2, mat2));
+
+	auto mat3 = make_shared<metal>(color(0.8, 0.8, 0.9), 1.0);
+	auto sphere3 = make_shared<sphere>(point3(0, 150, 145), 50);
+	objects.add(make_shared<gameobject>(sphere3, mat3));
+
+	auto mat4 = make_shared<dielectric>(1.5);
+	auto sphere4 = make_shared<sphere>(point3(360, 150, 145), 70);
+	auto boundry1 = make_shared<constant_medium>(sphere4, 0.2);
+	auto boundry1_mat = make_shared<isotropic>(color(0.2, 0.4, 0.9));
+	objects.add(make_shared<gameobject>(boundry1, boundry1_mat));
+
+	auto mat5 = make_shared<dielectric>(1.5);
+	auto sphere5 = make_shared<sphere>(point3(0, 0, 0), 5000);
+	auto boundry2 = make_shared<constant_medium>(sphere5, 0.0001);
+	auto boundry2_mat = make_shared<isotropic>(color(1, 1, 1));
+	objects.add(make_shared<gameobject>(boundry2, boundry2_mat));
+
+	auto emat = make_shared<lambertian>(make_shared<image_texture>("map.jpg"));
+	auto sphere6 = make_shared<sphere>(point3(400,200,400), 100);
+	objects.add(make_shared<gameobject>(sphere6, emat));
+
+    hittable_list boxes2;
+    auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
+    int ns = 1000;
+    for (int j = 0; j < ns; j++) {
+		auto sphere7 = make_shared<sphere>(point3::random(0, 165), 10);
+		auto translate1 = make_shared<translate>(sphere7, vector3(-100, 270, 395));
+		boxes2.add(make_shared<gameobject>(translate1, white));
+    }
+
+	auto node1 = make_shared<bvh_node>(boxes2);
+	objects.add(node1);
+
+    return objects;
 }
 
 void write_color(std::ofstream& ofl, color pixel_color, int sample_per_pixel) {

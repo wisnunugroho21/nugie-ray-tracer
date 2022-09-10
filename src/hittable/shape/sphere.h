@@ -1,6 +1,8 @@
 #pragma once
 
-#include "shape/shape.h"
+#include <memory>
+
+#include "shape.h"
 #include "arr3.h"
 #include "aabb.h"
 #include "material/material.h"
@@ -8,18 +10,21 @@
 #include "struct/bounding_record.h"
 #include "struct/texture_coordinate.h"
 
-class xz_rect : public shape
+using std::shared_ptr;
+
+class sphere : public shape
 {
 private:
-    double x0, x1, z0, z1, k;
+    point3 center;
+    double radius;
 
 public:
-    xz_rect();
-    xz_rect(double x0, double x1, double z0, double z1, double k);
+    sphere();
+    sphere(point3 center, double radius);
 
     hit_record hit(ray r, double t_min, double t_max) override;
     bounding_record bounding_box() override;
 
     hit_face_normal set_hit_face_normal(ray r, double t);
-    texture_coordinate get_uv(double x, double z);
+    texture_coordinate get_uv(point3 p);
 };

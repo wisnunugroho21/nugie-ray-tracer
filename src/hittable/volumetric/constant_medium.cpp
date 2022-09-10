@@ -1,4 +1,4 @@
-#include "volumetric/constant_medium.h"
+#include "constant_medium.h"
 
 constant_medium::constant_medium(shared_ptr<shape> b, double d) {
     this->boundary = b;

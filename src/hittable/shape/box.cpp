@@ -1,4 +1,4 @@
-#include "shape/box.h"
+#include "box.h"
 
 box::box(point3 box_min, point3 box_max) {
 	this->p0 = box_min;
