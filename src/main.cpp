@@ -71,6 +71,47 @@ hittable_list translate_rotate_cornell_box() {
 	auto green = make_shared<lambertian>(color(0.12, 0.45, 0.15));
 	auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
 	auto light = make_shared<diffuse_light>(color(15, 15, 15));
+
+	auto rect1 = make_shared<yz_rect>(0, 555, 0, 555, 555);
+	objects.add(make_shared<gameobject>(rect1, green));
+
+	auto rect2 = make_shared<yz_rect>(0, 555, 0, 555, 0);
+	objects.add(make_shared<gameobject>(rect2, red));
+
+	auto rect3 = make_shared<xz_rect>(213, 343, 227, 332, 554);
+	objects.add(make_shared<gameobject>(rect3, light));
+
+	auto rect4 = make_shared<xz_rect>(0, 555, 0, 555, 0);
+	objects.add(make_shared<gameobject>(rect4, white));
+
+	auto rect5 = make_shared<xz_rect>(0, 555, 0, 555, 555);
+	objects.add(make_shared<gameobject>(rect5, white));
+
+	auto rect6 = make_shared<xy_rect>(0, 555, 0, 555, 555);
+	objects.add(make_shared<gameobject>(rect6, white));
+
+	shared_ptr<shape> box1 = make_shared<box>(point3(130, 0, 65), point3(295, 165, 230));
+	box1 = make_shared<rotate_y>(box1, -18.0);
+	box1 = make_shared<constant_medium>(box1, 1.0);
+	// box1 = make_shared<translate>(box1, vector3(265, 0, 295));
+	objects.add(make_shared<gameobject>(box1, white));
+
+	shared_ptr<shape> box2 = make_shared<box>(point3(265, 0, 295), point3(430, 330, 460));
+	box2 = make_shared<rotate_y>(box2, 15.0);
+	box2 = make_shared<constant_medium>(box2, 1.0);
+	// box2 = make_shared<translate>(box2, vector3(130, 0, 65));
+	objects.add(make_shared<gameobject>(box2, white));
+
+	return objects;
+}
+
+hittable_list translate_rotate_cornell_box_volumetric() {
+	hittable_list objects;
+
+	auto red = make_shared<lambertian>(color(0.65, 0.05, 0.05));
+	auto green = make_shared<lambertian>(color(0.12, 0.45, 0.15));
+	auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
+	auto light = make_shared<diffuse_light>(color(15, 15, 15));
 	auto fog = make_shared<isotropic>(color(0,0,0));
 
 	auto rect1 = make_shared<yz_rect>(0, 555, 0, 555, 555);
@@ -385,6 +426,14 @@ int main(int argc, char const* argv[]) {
 			lookto = point3(0, 0, 0);
 			vpov = 20.0;
 			aperture = 0;
+			break;
+		case 6:
+			list = translate_rotate_cornell_box_volumetric();
+			background = color(0, 0, 0);
+			lookfrom = point3(278, 278, -800);
+			lookto = point3(278, 278, 0);
+			vpov = 40.0;
+			aperture = 0.0;
 			break;
 
 		default:
