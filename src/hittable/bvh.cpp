@@ -29,11 +29,11 @@ bvh_node::bvh_node(vector<shared_ptr<hittable>> src_objects) {
         auto mid = static_cast<int>(objects.size() / 2);
 
         vector<shared_ptr<hittable>> leftObj;
-        for (unsigned i = 0; i < mid; i++)
+        for (int i = 0; i < mid; i++)
             leftObj.push_back(objects.at(i));
 
         vector<shared_ptr<hittable>> rightObj;
-        for (unsigned j = mid; j < objects.size(); j++)
+        for (int j = mid; j < objects.size(); j++)
             rightObj.push_back(objects.at(j));
         
         this->left = make_shared<bvh_node>(leftObj);

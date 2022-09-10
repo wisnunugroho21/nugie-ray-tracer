@@ -5,11 +5,11 @@ translate::translate() {
 
 translate::translate(shared_ptr<shape> object, vector3 offset) {
 	this->object = object;
-	this->offset - offset;
+	this->offset = offset;
 }
 
 hit_record translate::hit(ray r, double t_min, double t_max) {
-	ray moved_r(r.origin() - offset, r.direction());
+	ray moved_r(r.origin() - this->offset, r.direction());
 	hit_record hit = this->object->hit(moved_r, t_min, t_max);
 
 	if (hit.is_hit) {		
@@ -28,8 +28,8 @@ bounding_record translate::bounding_box() {
 
 	if (bound.is_hit) {
 		bound.bounding_box = aabb(
-			bound.bounding_box.min() + offset,
-			bound.bounding_box.max() + offset
+			bound.bounding_box.min() + this->offset,
+			bound.bounding_box.max() + this->offset
 		);
 	}
 	

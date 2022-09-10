@@ -13,16 +13,13 @@
 #include "hittable/bvh.h"
 #include "hittable/hittable.h"
 #include "texture/checker.h"
-#include "texture/image_texture.h"
 #include "material/diffuse_light.h"
-#include "material/isotropic.h"
 #include "shape/xy_rect.h"
 #include "shape/yz_rect.h"
 #include "shape/xz_rect.h"
 #include "shape/box.h"
 #include "transform/translate.h"
 #include "transform/rotate.h"
-#include "volumetric/constant_medium.h"
 
 #include <iostream>
 #include <fstream>
@@ -90,59 +87,15 @@ hittable_list translate_rotate_cornell_box() {
 	auto rect6 = make_shared<xy_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect6, white));
 
-	shared_ptr<shape> box1 = make_shared<box>(point3(130, 0, 65), point3(295, 165, 230));
-	box1 = make_shared<rotate_y>(box1, -18.0);
-	box1 = make_shared<constant_medium>(box1, 1.0);
-	// box1 = make_shared<translate>(box1, vector3(265, 0, 295));
+	shared_ptr<shape> box1 = make_shared<box>(point3(0, 0, 0), point3(165, 330, 165));
+	box1 = make_shared<rotate_y>(box1, 15.0);
+	box1 = make_shared<translate>(box1, vector3(265, 0, 295));
 	objects.add(make_shared<gameobject>(box1, white));
 
-	shared_ptr<shape> box2 = make_shared<box>(point3(265, 0, 295), point3(430, 330, 460));
-	box2 = make_shared<rotate_y>(box2, 15.0);
-	box2 = make_shared<constant_medium>(box2, 1.0);
-	// box2 = make_shared<translate>(box2, vector3(130, 0, 65));
+	shared_ptr<shape> box2 = make_shared<box>(point3(0, 0, 0), point3(165, 165, 165));
+	box2 = make_shared<rotate_y>(box2, -18.0);
+	box2 = make_shared<translate>(box2, vector3(130, 0, 65));
 	objects.add(make_shared<gameobject>(box2, white));
-
-	return objects;
-}
-
-hittable_list translate_rotate_cornell_box_volumetric() {
-	hittable_list objects;
-
-	auto red = make_shared<lambertian>(color(0.65, 0.05, 0.05));
-	auto green = make_shared<lambertian>(color(0.12, 0.45, 0.15));
-	auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
-	auto light = make_shared<diffuse_light>(color(15, 15, 15));
-	auto fog = make_shared<isotropic>(color(0,0,0));
-
-	auto rect1 = make_shared<yz_rect>(0, 555, 0, 555, 555);
-	objects.add(make_shared<gameobject>(rect1, green));
-
-	auto rect2 = make_shared<yz_rect>(0, 555, 0, 555, 0);
-	objects.add(make_shared<gameobject>(rect2, red));
-
-	auto rect3 = make_shared<xz_rect>(213, 343, 227, 332, 554);
-	objects.add(make_shared<gameobject>(rect3, light));
-
-	auto rect4 = make_shared<xz_rect>(0, 555, 0, 555, 0);
-	objects.add(make_shared<gameobject>(rect4, white));
-
-	auto rect5 = make_shared<xz_rect>(0, 555, 0, 555, 555);
-	objects.add(make_shared<gameobject>(rect5, white));
-
-	auto rect6 = make_shared<xy_rect>(0, 555, 0, 555, 555);
-	objects.add(make_shared<gameobject>(rect6, white));
-
-	shared_ptr<shape> box1 = make_shared<box>(point3(130, 0, 65), point3(295, 165, 230));
-	box1 = make_shared<rotate_y>(box1, -18.0);
-	box1 = make_shared<constant_medium>(box1, 1.0);
-	// box1 = make_shared<translate>(box1, vector3(265, 0, 295));
-	objects.add(make_shared<gameobject>(box1, fog));
-
-	shared_ptr<shape> box2 = make_shared<box>(point3(265, 0, 295), point3(430, 330, 460));
-	box2 = make_shared<rotate_y>(box2, 15.0);
-	box2 = make_shared<constant_medium>(box2, 1.0);
-	// box2 = make_shared<translate>(box2, vector3(130, 0, 65));
-	objects.add(make_shared<gameobject>(box2, fog));
 
 	return objects;
 }
@@ -201,7 +154,70 @@ hittable_list random_scenes() {
 
 	shared_ptr<material> mat3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.1);
 	shared_ptr<shape> shp3 = make_shared<sphere>(point3(4, 1, 0), 1);
+	world.add(make_shared<gameobject>(shp3, mat3));	
+
+	return world;
+}
+
+hittable_list random_scenes_light() {
+	hittable_list world;
+
+	shared_ptr<checker> text_ground = make_shared<checker>(color(1, 1, 1), color(0, 0, 0));
+	shared_ptr<lambertian> mat_ground = make_shared<lambertian>(text_ground);
+	shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
+	world.add(make_shared<gameobject>(shp_ground, mat_ground));
+
+	for (int a = -12; a < 12; a++) {
+		for (int b = -12; b < 12; b++) {
+			double chosen_mat = random_double();
+			point3 center(a + 0.9 * random_double(), 0.2, b + 0.9 * random_double());
+
+			if ((center - point3(4, 0.2, 0)).length() > 0.9) {
+				shared_ptr<material> obj_mat;
+				shared_ptr<shape> obj_shape;
+
+				if (chosen_mat < 0.8) {
+					color albedo = color::random() * color::random();
+
+					obj_mat = make_shared<lambertian>(albedo);
+					obj_shape = make_shared<sphere>(center, 0.2);
+
+					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+				}
+				else if (chosen_mat < 0.95) {
+					color albedo = color::random(0.5, 1);
+					double fuzz = random_double(0, 0.5);
+
+					obj_mat = make_shared<metal>(albedo, fuzz);
+					obj_shape = make_shared<sphere>(center, 0.2);
+
+					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+				}
+				else {
+					obj_mat = make_shared<dielectric>(1.5);
+					obj_shape = make_shared<sphere>(center, 0.2);
+
+					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+				}
+			}
+		}
+	}
+
+	shared_ptr<material> mat1 = make_shared<dielectric>(1.5);
+	shared_ptr<shape> shp1 = make_shared<sphere>(point3(0, 1, 0), 1);
+	world.add(make_shared<gameobject>(shp1, mat1));
+
+	shared_ptr<material> mat2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
+	shared_ptr<shape> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1);
+	world.add(make_shared<gameobject>(shp2, mat2));
+
+	shared_ptr<material> mat3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.1);
+	shared_ptr<shape> shp3 = make_shared<sphere>(point3(4, 1, 0), 1);
 	world.add(make_shared<gameobject>(shp3, mat3));
+
+	shared_ptr<material> light = make_shared<diffuse_light>(color(5.0, 5.0, 5.0));
+	shared_ptr<shape> shp4 = make_shared<xz_rect>(-3, 3, -3, 3, 3);
+	world.add(make_shared<gameobject>(shp4, light));
 
 	return world;
 }
@@ -214,8 +230,8 @@ hittable_list random_scenes_rectangle() {
 	shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
 	world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
-	for (int a = -12; a < 12; a++) {
-		for (int b = -12; b < 12; b++) {
+	for (int a = -14; a < 14; a++) {
+		for (int b = -14; b < 14; b++) {
 			double chosen_mat = random_double();
 			point3 center(a + 0.9 * random_double(), 0.2, b + 0.9 * random_double());
 
@@ -361,10 +377,10 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 
 int main(int argc, char const* argv[]) {
 
-	int depth = 10;
-	int sample_per_pixel = 10;
+	int depth = 40;
+	int sample_per_pixel = 400;
 	double aspect_ratio = 1.0;
-	int image_width = 300;
+	int image_width = 1000;
 	int image_height = static_cast<int> (image_width / aspect_ratio);
 
 	hittable_list list;
@@ -420,20 +436,20 @@ int main(int argc, char const* argv[]) {
 			aperture = 0;
 			break;
 		case 5:
+			list = random_scenes_light();
+			background = color(0, 0, 0);
+			lookfrom = point3(13, 5, 3);
+			lookto = point3(0, 1, 0);
+			vpov = 20.0;
+			aperture = 0;
+			break;
+		case 6:
 			list = earth();
 			background = color(0.7, 0.8, 1.0);
 			lookfrom = point3(13, 2, 3);
 			lookto = point3(0, 0, 0);
 			vpov = 20.0;
 			aperture = 0;
-			break;
-		case 6:
-			list = translate_rotate_cornell_box_volumetric();
-			background = color(0, 0, 0);
-			lookfrom = point3(278, 278, -800);
-			lookto = point3(278, 278, 0);
-			vpov = 40.0;
-			aperture = 0.0;
 			break;
 
 		default:
@@ -449,7 +465,7 @@ int main(int argc, char const* argv[]) {
 
 	// ----- Render ----- //
 
-	std::ofstream outfile("image.ppm");
+	std::ofstream outfile("image11.ppm");
 	outfile << "P3\n" << image_width << " " << image_height << "\n255\n";
 
 	std::cerr << image_height;
