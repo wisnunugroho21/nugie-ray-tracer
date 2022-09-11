@@ -37,11 +37,13 @@ hit_record sphere::hit(ray r, double t_min, double t_max) {
 
     if (hit.is_hit) {
         hit.t = root;
+        hit.p = r.at(hit.t);
 
-        hit_face_normal hitted_ray = this->set_hit_face_normal(r, hit.t);
+        vector3 outward_normal = (hit.p - this->center) / this->radius;
+
+        hit_face_normal hitted_ray =  ray::set_hit_face_normal(r, outward_normal);
         texture_coordinate txc = this->get_uv(hitted_ray.normal);
-
-        hit.p = hitted_ray.p;
+        
         hit.front_face = hitted_ray.front_face;
         hit.normal = hitted_ray.normal;
 
@@ -50,18 +52,6 @@ hit_record sphere::hit(ray r, double t_min, double t_max) {
     }
 
     return hit;
-}
-
-hit_face_normal sphere::set_hit_face_normal(ray r, double t) {
-    hit_face_normal hitted_ray;
-    hitted_ray.p = r.at(t);
-
-    vector3 outward_normal = (hitted_ray.p - this->center) / this->radius;
-    
-    hitted_ray.front_face = dot(r.direction(), outward_normal) < 0;
-    hitted_ray.normal = hitted_ray.front_face ? outward_normal : -outward_normal;   
-
-    return hitted_ray;
 }
 
 bounding_record sphere::bounding_box() {

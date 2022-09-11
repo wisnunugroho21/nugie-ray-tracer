@@ -10,7 +10,7 @@
 #include "material/dielectric.h"
 #include "material/diffuse_light.h"
 #include "material/isotropic.h"
-#include "struct/hit_result.h"
+#include "struct/hit_record.h"
 #include "texture/checker.h"
 #include "texture/image_texture.h"
 #include "hittable/hittable.h"
@@ -91,12 +91,12 @@ hittable_list translate_rotate_cornell_box() {
 	auto rect6 = make_shared<xy_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect6, white));
 
-	shared_ptr<shape> box1 = make_shared<box>(point3(0, 0, 0), point3(165, 330, 165));
+	shared_ptr<hittable> box1 = make_shared<box>(point3(0, 0, 0), point3(165, 330, 165));
 	box1 = make_shared<rotate_y>(box1, 15.0);
 	box1 = make_shared<translate>(box1, vector3(265, 0, 295));
 	objects.add(make_shared<gameobject>(box1, white));
 
-	shared_ptr<shape> box2 = make_shared<box>(point3(0, 0, 0), point3(165, 165, 165));
+	shared_ptr<hittable> box2 = make_shared<box>(point3(0, 0, 0), point3(165, 165, 165));
 	box2 = make_shared<rotate_y>(box2, -18.0);
 	box2 = make_shared<translate>(box2, vector3(130, 0, 65));
 	objects.add(make_shared<gameobject>(box2, white));
@@ -389,13 +389,15 @@ hittable_list final_scene() {
 
 	auto mat4 = make_shared<dielectric>(1.5);
 	auto sphere4 = make_shared<sphere>(point3(360, 150, 145), 70);
-	auto boundry1 = make_shared<constant_medium>(sphere4, 0.2);
+	auto go1 = make_shared<gameobject>(sphere4, mat4);
+	auto boundry1 = make_shared<constant_medium>(go1, 0.2);
 	auto boundry1_mat = make_shared<isotropic>(color(0.2, 0.4, 0.9));
 	objects.add(make_shared<gameobject>(boundry1, boundry1_mat));
 
 	auto mat5 = make_shared<dielectric>(1.5);
 	auto sphere5 = make_shared<sphere>(point3(0, 0, 0), 5000);
-	auto boundry2 = make_shared<constant_medium>(sphere5, 0.0001);
+	auto go2 = make_shared<gameobject>(sphere5, mat5);
+	auto boundry2 = make_shared<constant_medium>(go2, 0.0001);
 	auto boundry2_mat = make_shared<isotropic>(color(1, 1, 1));
 	objects.add(make_shared<gameobject>(boundry2, boundry2_mat));
 
@@ -408,12 +410,13 @@ hittable_list final_scene() {
     int ns = 1000;
     for (int j = 0; j < ns; j++) {
 		auto sphere7 = make_shared<sphere>(point3::random(0, 165), 10);
-		auto translate1 = make_shared<translate>(sphere7, vector3(-100, 270, 395));
-		boxes2.add(make_shared<gameobject>(translate1, white));
+		boxes2.add(make_shared<gameobject>(sphere7, white));
     }
 
 	auto node1 = make_shared<bvh_node>(boxes2);
-	objects.add(node1);
+	auto translate1 = make_shared<translate>(node1, vector3(-100, 270, 395));
+	auto rotate1 = make_shared<rotate_y>(translate1, 15);
+	objects.add(rotate1);
 
     return objects;
 }
@@ -438,7 +441,7 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 	if (depth <= 0)
 		return color(0, 0, 0);
 
-	hit_result res = world.hit(r, 0.001, infinity);
+	hit_record res = world.hit(r, 0.001, infinity);
 	if (!res.is_hit) {
 		return background;
 	}
@@ -452,10 +455,10 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 
 int main(int argc, char const* argv[]) {
 
-	int depth = 40;
-	int sample_per_pixel = 400;
-	double aspect_ratio = 1.0;
-	int image_width = 1000;
+	int depth = 10;
+	int sample_per_pixel = 20;
+	double aspect_ratio = 16.0 / 9.0;
+	int image_width = 400;
 	int image_height = static_cast<int> (image_width / aspect_ratio);
 
 	hittable_list list;
@@ -468,7 +471,7 @@ int main(int argc, char const* argv[]) {
 	auto aperture = 0.0;
 	auto dist_to_focus = 10.0;
 
-	switch (3)
+	switch (7)
 	{
 		case 0:
 			list = random_scenes();
@@ -526,6 +529,14 @@ int main(int argc, char const* argv[]) {
 			vpov = 20.0;
 			aperture = 0;
 			break;
+		case 7:
+			list = final_scene();
+			background = color(0, 0, 0);
+			lookfrom = point3(478, 278, -600);
+			lookto = point3(278, 278, 0);
+			vpov = 40.0;
+			aperture = 0.0;
+			break;
 
 		default:
 			break;
@@ -540,7 +551,7 @@ int main(int argc, char const* argv[]) {
 
 	// ----- Render ----- //
 
-	std::ofstream outfile("image11.ppm");
+	std::ofstream outfile("image12.ppm");
 	outfile << "P3\n" << image_width << " " << image_height << "\n255\n";
 
 	std::cerr << image_height;

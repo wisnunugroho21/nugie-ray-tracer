@@ -8,11 +8,9 @@ diffuse_light::diffuse_light(color c) {
     this->emit = make_shared<solid_color>(c);
 }
 
-scattered_record diffuse_light::scatter(ray r_in, hit_record hit) {
-    scattered_record scat;
-    scat.is_scatter = false;
-
-    return scat;
+hit_record diffuse_light::scatter(ray r_in, hit_record hit) {
+    hit.is_scatter = false;
+    return hit;
 }
 
 color diffuse_light::emitted(double u, double v, point3 p) {

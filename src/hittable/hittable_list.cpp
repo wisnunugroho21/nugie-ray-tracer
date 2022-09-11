@@ -25,12 +25,12 @@ vector<shared_ptr<hittable>> hittable_list::getAll()
     return this->objects;
 }
 
-hit_result hittable_list::hit(ray r, double t_min, double t_max){
-    hit_result hitted;
+hit_record hittable_list::hit(ray r, double t_min, double t_max){
+    hit_record hitted;
     double closest = t_max;
 
     for (shared_ptr<hittable> object : this->objects) {
-        hit_result hit = object->hit(r, t_min, closest);
+        hit_record hit = object->hit(r, t_min, closest);
 
         if (hit.is_hit) {
             hitted = hit;

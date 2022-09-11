@@ -10,14 +10,14 @@
 
 using namespace std;
 
-class constant_medium : public shape
+class constant_medium : public hittable
 {
 private:
-    shared_ptr<shape> boundary;
+    shared_ptr<hittable> boundary;
     double neg_inv_density;
 
 public:
-    constant_medium(shared_ptr<shape> b, double d);
+    constant_medium(shared_ptr<hittable> b, double d);
 
     hit_record hit(ray r, double t_min, double t_max) override;
     bounding_record bounding_box() override;

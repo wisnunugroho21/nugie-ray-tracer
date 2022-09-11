@@ -13,10 +13,10 @@
 using std::shared_ptr;
 using std::make_shared;
 
-class rotate_y : public shape
+class rotate_y : public hittable
 {
 private:
-    shared_ptr<shape> object;
+    shared_ptr<hittable> object;
 
     double sin_theta;
     double cos_theta;
@@ -27,10 +27,8 @@ private:
 
 public:
     rotate_y();
-    rotate_y(shared_ptr<shape> object, double angle);
+    rotate_y(shared_ptr<hittable> object, double angle);
 
     hit_record hit(ray r, double t_min, double t_max) override;
     bounding_record bounding_box() override;
-
-    hit_face_normal set_hit_face_normal(ray r, vector3 hit_normal);
 };

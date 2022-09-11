@@ -1,6 +1,6 @@
 #include "constant_medium.h"
 
-constant_medium::constant_medium(shared_ptr<shape> b, double d) {
+constant_medium::constant_medium(shared_ptr<hittable> b, double d) {
     this->boundary = b;
     this->neg_inv_density = -1 / d;
 }

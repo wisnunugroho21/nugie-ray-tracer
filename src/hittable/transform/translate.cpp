@@ -3,7 +3,7 @@
 translate::translate() {
 }
 
-translate::translate(shared_ptr<shape> object, vector3 offset) {
+translate::translate(shared_ptr<hittable> object, vector3 offset) {
 	this->object = object;
 	this->offset = offset;
 }
@@ -13,7 +13,7 @@ hit_record translate::hit(ray r, double t_min, double t_max) {
 	hit_record hit = this->object->hit(moved_r, t_min, t_max);
 
 	if (hit.is_hit) {		
-		hit_face_normal hitted_ray = this->set_hit_face_normal(moved_r, hit.normal);
+		hit_face_normal hitted_ray = ray::set_hit_face_normal(moved_r, hit.normal);
 
 		hit.p += this->offset;
 		hit.front_face = hitted_ray.front_face;
@@ -34,13 +34,4 @@ bounding_record translate::bounding_box() {
 	}
 	
 	return bound;
-}
-
-hit_face_normal translate::set_hit_face_normal(ray r, vector3 hit_normal) {
-	hit_face_normal hitted_ray;
-
-	hitted_ray.front_face = dot(r.direction(), hit_normal) < 0;
-	hitted_ray.normal = hitted_ray.front_face ? hit_normal : -hit_normal;
-
-	return hitted_ray;
 }

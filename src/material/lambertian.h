@@ -19,5 +19,5 @@ public:
     lambertian(shared_ptr<texture> albedo);
     lambertian(color c);
 
-    scattered_record scatter(ray r_in, hit_record hit) override;
+    hit_record scatter(ray r_in, hit_record hit) override;
 };

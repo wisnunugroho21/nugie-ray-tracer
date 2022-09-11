@@ -28,5 +28,5 @@ public:
     dielectric(shared_ptr<texture> albedo, double index_of_refraction);
     dielectric(color c, double index_of_refraction);
 
-    scattered_record scatter(ray r_in, hit_record hit) override;
+    hit_record scatter(ray r_in, hit_record hit) override;
 };

@@ -20,5 +20,5 @@ public:
     isotropic(shared_ptr<texture> albedo);
     isotropic(color c);
 
-    scattered_record scatter(ray r_in, hit_record hit) override;
+    hit_record scatter(ray r_in, hit_record hit) override;
 };

@@ -19,7 +19,5 @@ public:
 
     hit_record hit(ray r, double t_min, double t_max) override;
     bounding_record bounding_box() override;
-
-    hit_face_normal set_hit_face_normal(ray r, double t);
     texture_coordinate get_uv(double x, double z);
 };

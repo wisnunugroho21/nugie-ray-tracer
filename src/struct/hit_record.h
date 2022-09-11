@@ -5,6 +5,8 @@
 struct hit_record
 {
     bool is_hit = false;
+    bool is_scatter = false;
+
     point3 p;
     double t;
 
@@ -13,4 +15,8 @@ struct hit_record
 
     double u;
     double v;
+    
+    ray scattered;
+    color attenuation;
+    color emitted; 
 };

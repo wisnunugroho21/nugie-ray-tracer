@@ -1,6 +1,6 @@
 #include "rotate.h"
 
-rotate_y::rotate_y(shared_ptr<shape> object, double angle) {
+rotate_y::rotate_y(shared_ptr<hittable> object, double angle) {
 	this->object = object;
 
 	auto radians = degrees_to_radians(angle);
@@ -60,7 +60,7 @@ hit_record rotate_y::hit(ray r, double t_min, double t_max) {
 		normal[0] = this->cos_theta * hit.normal[0] + this->sin_theta * hit.normal[2];
 		normal[2] = -1 * this->sin_theta * hit.normal[0] + this->cos_theta * hit.normal[2];		
 
-		hit_face_normal hitted_ray = this->set_hit_face_normal(rotated_r, normal);
+		hit_face_normal hitted_ray = ray::set_hit_face_normal(rotated_r, normal);
 
 		hit.p = p;
 		hit.front_face = hitted_ray.front_face;
@@ -77,13 +77,4 @@ bounding_record rotate_y::bounding_box() {
 	bound.bounding_box = this->bbox;
 
 	return bound;
-}
-
-hit_face_normal rotate_y::set_hit_face_normal(ray r, vector3 hit_normal) {
-	hit_face_normal hitted_ray;
-
-	hitted_ray.front_face = dot(r.direction(), hit_normal) < 0;
-	hitted_ray.normal = hitted_ray.front_face ? hit_normal : -hit_normal;
-
-	return hitted_ray;
 }

@@ -23,5 +23,5 @@ public:
     metal(shared_ptr<texture> albedo, double fuzz);
     metal(color c, double fuzz);
   
-    scattered_record scatter(ray r_in, hit_record hit) override;
+    hit_record scatter(ray r_in, hit_record hit) override;
 };

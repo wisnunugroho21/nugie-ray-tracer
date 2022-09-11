@@ -5,7 +5,7 @@
 
 #include "aabb.h"
 #include "hittable/hittable.h"
-#include "struct/hit_result.h"
+#include "struct/hit_record.h"
 #include "struct/bounding_record.h"
 #include "hittable/gameobject.h"
 
@@ -25,6 +25,6 @@ public:
     void add(shared_ptr<hittable> object);
     vector<shared_ptr<hittable>> getAll();
 
-    hit_result hit(ray r, double t_min, double t_max) override;
+    hit_record hit(ray r, double t_min, double t_max) override;
     bounding_record bounding_box() override;
 };

@@ -26,8 +26,11 @@ hit_record xy_rect::hit(ray r, double t_min, double t_max) {
 
     if (hit.is_hit) {
         hit.t = t;
+        hit.p = r.at(hit.t);
 
-        hit_face_normal hitted_ray = this->set_hit_face_normal(r, hit.t);
+        vector3 outward_normal = vector3(0, 0, 1);
+
+        hit_face_normal hitted_ray = ray::set_hit_face_normal(r, outward_normal);
         texture_coordinate txc = this->get_uv(x, y);
 
         hit.p = hitted_ray.p;
@@ -51,18 +54,6 @@ bounding_record xy_rect::bounding_box() {
     );
 
     return bound;
-}
-
-hit_face_normal xy_rect::set_hit_face_normal(ray r, double t) {
-    hit_face_normal hitted_ray;
-    hitted_ray.p = r.at(t);
-
-    vector3 outward_normal = vector3(0, 0, 1);
-    
-    hitted_ray.front_face = dot(r.direction(), outward_normal) < 0;
-    hitted_ray.normal = hitted_ray.front_face ? outward_normal : -outward_normal;   
-
-    return hitted_ray;
 }
 
 texture_coordinate xy_rect::get_uv(double x, double y) {

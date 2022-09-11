@@ -8,7 +8,7 @@
 #include "hittable/gameobject.h"
 #include "hittable/hittable_list.h"
 #include "struct/bounding_record.h"
-#include "struct/hit_result.h"
+#include "struct/hit_record.h"
 #include "helper/helper.h"
 
 using std::shared_ptr;
@@ -28,7 +28,7 @@ public:
     bvh_node(hittable_list list) : bvh_node(list.getAll()) {}
     bvh_node(vector<shared_ptr<hittable>> src_objects);
 
-    hit_result hit(ray r, double t_min, double t_max) override;
+    hit_record hit(ray r, double t_min, double t_max) override;
     bounding_record bounding_box() override;
 
     static int find_best_axis(vector<shared_ptr<hittable>> src_objects);

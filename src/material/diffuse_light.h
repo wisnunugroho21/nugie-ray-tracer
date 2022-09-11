@@ -19,6 +19,6 @@ public:
     diffuse_light(shared_ptr<texture> emit);
     diffuse_light(color c);
 
-    scattered_record scatter(ray r_in, hit_record hit) override;
+    hit_record scatter(ray r_in, hit_record hit) override;
     color emitted(double u, double v, point3 p) override;
 };
