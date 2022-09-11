@@ -33,7 +33,6 @@ hit_record xy_rect::hit(ray r, double t_min, double t_max) {
         hit_face_normal hitted_ray = ray::set_hit_face_normal(r, outward_normal);
         texture_coordinate txc = this->get_uv(x, y);
 
-        hit.p = hitted_ray.p;
         hit.front_face = hitted_ray.front_face;
         hit.normal = hitted_ray.normal;
 
