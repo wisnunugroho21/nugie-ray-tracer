@@ -5,7 +5,6 @@
 #include "arr3.h"
 #include "hittable/hittable.h"
 #include "material/material.h"
-#include "shape/shape.h"
 #include "struct/hit_record.h"
 #include "struct/scattered_record.h"
 #include "struct/hit_record.h"

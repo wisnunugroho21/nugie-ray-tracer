@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "shape.h"
 #include "arr3.h"
 #include "aabb.h"
+#include "hittable/hittable.h"
 #include "material/material.h"
 #include "struct/hit_face_normal.h"
 #include "struct/bounding_record.h"
@@ -12,7 +12,7 @@
 
 using std::shared_ptr;
 
-class sphere : public shape
+class sphere : public hittable
 {
 private:
     point3 center;

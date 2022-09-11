@@ -3,9 +3,9 @@
 #include <memory>
 #include <vector>
 
-#include "shape.h"
 #include "arr3.h"
 #include "aabb.h"
+#include "hittable/hittable.h"
 #include "material/material.h"
 #include "struct/hit_face_normal.h"
 #include "struct/bounding_record.h"
@@ -17,11 +17,11 @@
 
 using namespace std;
 
-class box : public shape
+class box : public hittable
 {
 private:
     point3 p0, p1;
-    vector<shared_ptr<shape>> rectangles;
+    vector<shared_ptr<hittable>> rectangles;
 
 public:
     box();

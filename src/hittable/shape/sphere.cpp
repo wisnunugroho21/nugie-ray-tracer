@@ -2,11 +2,7 @@
 
 #include "sphere.h"
 
-sphere::sphere() : shape() {
-
-}
-
-sphere::sphere(point3 center, double radius) : shape() {
+sphere::sphere(point3 center, double radius) {
     this->center = center;
     this->radius = radius;
 }

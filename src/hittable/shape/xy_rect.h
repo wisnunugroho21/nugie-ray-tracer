@@ -1,14 +1,14 @@
 #pragma once
 
-#include "shape.h"
 #include "arr3.h"
 #include "aabb.h"
+#include "hittable/hittable.h"
 #include "material/material.h"
 #include "struct/hit_face_normal.h"
 #include "struct/bounding_record.h"
 #include "struct/texture_coordinate.h"
 
-class xy_rect : public shape
+class xy_rect : public hittable
 {
 private:
     double x0, x1, y0, y1, k;

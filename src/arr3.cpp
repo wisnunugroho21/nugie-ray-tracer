@@ -168,6 +168,15 @@ arr3 arr3::random_in_unit_disk() {
 	}
 }
 
+arr3 arr3::random_in_unit_sphere() {
+    while (true) {
+        auto p = arr3::random(-1,1);
+        if (p.length_squared() < 1) {
+			return p;
+		}
+    }
+}
+
 
 arr3 operator + (arr3 u, arr3 v)
 {

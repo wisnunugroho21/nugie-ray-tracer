@@ -56,10 +56,10 @@ hittable_list cornell_box() {
 	auto rect6 = make_shared<xy_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect6, white));
 
-	shared_ptr<shape> box1 = make_shared<box>(point3(130, 0, 65), point3(295, 165, 230));
+	shared_ptr<hittable> box1 = make_shared<box>(point3(130, 0, 65), point3(295, 165, 230));
 	objects.add(make_shared<gameobject>(box1, white));
 
-	shared_ptr<shape> box2 = make_shared<box>(point3(265, 0, 295), point3(430, 330, 460));
+	shared_ptr<hittable> box2 = make_shared<box>(point3(265, 0, 295), point3(430, 330, 460));
 	objects.add(make_shared<gameobject>(box2, white));
 
 	return objects;
@@ -109,7 +109,7 @@ hittable_list random_scenes() {
 
 	shared_ptr<checker> text_ground = make_shared<checker>(color(1, 1, 1), color(0, 0, 0));
 	shared_ptr<lambertian> mat_ground = make_shared<lambertian>(text_ground);
-	shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
+	shared_ptr<hittable> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
 	world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
 	for (int a = -11; a < 11; a++) {
@@ -119,45 +119,45 @@ hittable_list random_scenes() {
 
 			if ((center - point3(4, 0.2, 0)).length() > 0.9) {
 				shared_ptr<material> obj_mat;
-				shared_ptr<shape> obj_shape;
+				shared_ptr<hittable> obj_hittable;
 
 				if (chosen_mat < 0.8) {
 					color albedo = color::random() * color::random();
 
 					obj_mat = make_shared<lambertian>(albedo);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 				else if (chosen_mat < 0.95) {
 					color albedo = color::random(0.5, 1);
 					double fuzz = random_double(0, 0.5);
 
 					obj_mat = make_shared<metal>(albedo, fuzz);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 				else {
 					obj_mat = make_shared<dielectric>(1.5);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 			}
 		}
 	}	
 
 	shared_ptr<material> mat1 = make_shared<dielectric>(1.5);
-	shared_ptr<shape> shp1 = make_shared<sphere>(point3(0, 1, 0), 1);
+	shared_ptr<hittable> shp1 = make_shared<sphere>(point3(0, 1, 0), 1);
 	world.add(make_shared<gameobject>(shp1, mat1));
 
 	shared_ptr<material> mat2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
-	shared_ptr<shape> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1);
+	shared_ptr<hittable> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1);
 	world.add(make_shared<gameobject>(shp2, mat2));
 
 	shared_ptr<material> mat3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.1);
-	shared_ptr<shape> shp3 = make_shared<sphere>(point3(4, 1, 0), 1);
+	shared_ptr<hittable> shp3 = make_shared<sphere>(point3(4, 1, 0), 1);
 	world.add(make_shared<gameobject>(shp3, mat3));	
 
 	return world;
@@ -168,7 +168,7 @@ hittable_list random_scenes_light() {
 
 	shared_ptr<checker> text_ground = make_shared<checker>(color(1, 1, 1), color(0, 0, 0));
 	shared_ptr<lambertian> mat_ground = make_shared<lambertian>(text_ground);
-	shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
+	shared_ptr<hittable> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
 	world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
 	for (int a = -12; a < 12; a++) {
@@ -178,49 +178,49 @@ hittable_list random_scenes_light() {
 
 			if ((center - point3(4, 0.2, 0)).length() > 0.9) {
 				shared_ptr<material> obj_mat;
-				shared_ptr<shape> obj_shape;
+				shared_ptr<hittable> obj_hittable;
 
 				if (chosen_mat < 0.8) {
 					color albedo = color::random() * color::random();
 
 					obj_mat = make_shared<lambertian>(albedo);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 				else if (chosen_mat < 0.95) {
 					color albedo = color::random(0.5, 1);
 					double fuzz = random_double(0, 0.5);
 
 					obj_mat = make_shared<metal>(albedo, fuzz);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 				else {
 					obj_mat = make_shared<dielectric>(1.5);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 			}
 		}
 	}
 
 	shared_ptr<material> mat1 = make_shared<dielectric>(1.5);
-	shared_ptr<shape> shp1 = make_shared<sphere>(point3(0, 1, 0), 1);
+	shared_ptr<hittable> shp1 = make_shared<sphere>(point3(0, 1, 0), 1);
 	world.add(make_shared<gameobject>(shp1, mat1));
 
 	shared_ptr<material> mat2 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
-	shared_ptr<shape> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1);
+	shared_ptr<hittable> shp2 = make_shared<sphere>(point3(-4, 1, 0), 1);
 	world.add(make_shared<gameobject>(shp2, mat2));
 
 	shared_ptr<material> mat3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.1);
-	shared_ptr<shape> shp3 = make_shared<sphere>(point3(4, 1, 0), 1);
+	shared_ptr<hittable> shp3 = make_shared<sphere>(point3(4, 1, 0), 1);
 	world.add(make_shared<gameobject>(shp3, mat3));
 
 	shared_ptr<material> light = make_shared<diffuse_light>(color(5.0, 5.0, 5.0));
-	shared_ptr<shape> shp4 = make_shared<xz_rect>(-3, 3, -3, 3, 3);
+	shared_ptr<hittable> shp4 = make_shared<xz_rect>(-3, 3, -3, 3, 3);
 	world.add(make_shared<gameobject>(shp4, light));
 
 	return world;
@@ -231,7 +231,7 @@ hittable_list random_scenes_rectangle() {
 
 	shared_ptr<checker> text_ground = make_shared<checker>(color(1, 1, 1), color(0, 0, 0));
 	shared_ptr<lambertian> mat_ground = make_shared<lambertian>(text_ground);
-	shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
+	shared_ptr<hittable> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
 	world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
 	for (int a = -14; a < 14; a++) {
@@ -241,45 +241,45 @@ hittable_list random_scenes_rectangle() {
 
 			if ((center - point3(4, 0.2, 0)).length() > 0.9) {
 				shared_ptr<material> obj_mat;
-				shared_ptr<shape> obj_shape;
+				shared_ptr<hittable> obj_hittable;
 
 				if (chosen_mat < 0.8) {
 					color albedo = color::random() * color::random();
 
 					obj_mat = make_shared<lambertian>(albedo);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 				else if (chosen_mat < 0.95) {
 					color albedo = color::random(0.5, 1);
 					double fuzz = random_double(0, 0.5);
 
 					obj_mat = make_shared<metal>(albedo, fuzz);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 				else {
 					obj_mat = make_shared<dielectric>(1.5);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 			}
 		}
 	}
 
 	shared_ptr<material> mat1 = make_shared<lambertian>(color(0.4, 0.2, 0.1));
-	shared_ptr<shape> shp1 = make_shared<box>(point3(-0.5, 0.5, -0.5), point3(0.5, 1.5, 0.5));
+	shared_ptr<hittable> shp1 = make_shared<box>(point3(-0.5, 0.5, -0.5), point3(0.5, 1.5, 0.5));
 	world.add(make_shared<gameobject>(shp1, mat1));
 
 	shared_ptr<material> mat2 = make_shared<dielectric>(1.5);
-	shared_ptr<shape> shp2 = make_shared<box>(point3(-3.5, 0.5, -0.5), point3(-2.5, 1.5, 0.5));
+	shared_ptr<hittable> shp2 = make_shared<box>(point3(-3.5, 0.5, -0.5), point3(-2.5, 1.5, 0.5));
 	world.add(make_shared<gameobject>(shp2, mat2));
 
 	shared_ptr<material> mat3 = make_shared<metal>(color(0.7, 0.6, 0.5), 0.1);
-	shared_ptr<shape> shp3 = make_shared<box>(point3(3.5, 0.5, -0.5), point3(4.5, 1.5, 0.5));
+	shared_ptr<hittable> shp3 = make_shared<box>(point3(3.5, 0.5, -0.5), point3(4.5, 1.5, 0.5));
 	world.add(make_shared<gameobject>(shp3, mat3));
 
 	return world;
@@ -290,7 +290,7 @@ hittable_list mirror_random_scenes() {
 
 	shared_ptr<checker> text_ground = make_shared<checker>(color(1, 1, 1), color(0, 0, 0));
 	shared_ptr<lambertian> mat_ground = make_shared<lambertian>(color(1, 1, 1));
-	shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
+	shared_ptr<hittable> shp_ground = make_shared<sphere>(point3(0, -1000, 0), 1000);
 	world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
 	for (int a = -11; a < 11; a++) {
@@ -300,37 +300,37 @@ hittable_list mirror_random_scenes() {
 
 			if ((center - point3(4, 0.2, 0)).length() > 0.9) {
 				shared_ptr<material> obj_mat;
-				shared_ptr<shape> obj_shape;
+				shared_ptr<hittable> obj_hittable;
 
 				if (chosen_mat < 0.8) {
 					color albedo = color::random() * color::random();
 
 					obj_mat = make_shared<lambertian>(albedo);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 				else if (chosen_mat < 0.95) {
 					color albedo = color::random(0.5, 1);
 					double fuzz = random_double(0, 0.5);
 
 					obj_mat = make_shared<metal>(albedo, fuzz);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 				else {
 					obj_mat = make_shared<dielectric>(1.5);
-					obj_shape = make_shared<sphere>(center, 0.2);
+					obj_hittable = make_shared<sphere>(center, 0.2);
 
-					world.add(make_shared<gameobject>(obj_shape, obj_mat));
+					world.add(make_shared<gameobject>(obj_hittable, obj_mat));
 				}
 			}			
 		}
 	}	
 
 	shared_ptr<material> glass_mat = make_shared<dielectric>(1.5);
-	shared_ptr<shape> rect = make_shared<sphere>(point3(0, 1, 0), 1);
+	shared_ptr<hittable> rect = make_shared<sphere>(point3(0, 1, 0), 1);
 	world.add(make_shared<gameobject>(rect, glass_mat));
 
 	return world;
@@ -341,7 +341,7 @@ hittable_list earth() {
 
 	shared_ptr<texture> text_ground = make_shared<image_texture>("map.jpg");
 	shared_ptr<material> mat_ground = make_shared<lambertian>(text_ground);
-	shared_ptr<shape> shp_ground = make_shared<sphere>(point3(0,0,0), 2);
+	shared_ptr<hittable> shp_ground = make_shared<sphere>(point3(0,0,0), 2);
 	world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
     return world;

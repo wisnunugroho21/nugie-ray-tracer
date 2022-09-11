@@ -1,8 +1,8 @@
 #pragma once
 
 #include "arr3.h"
+#include "hittable/hittable.h"
 #include "texture/texture.h"
-#include "hittable/shape/shape.h"
 #include "struct/hit_face_normal.h"
 #include "helper/helper.h"
 

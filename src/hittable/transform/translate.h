@@ -3,9 +3,9 @@
 #include <memory>
 
 #include "ray.h"
+#include "hittable/hittable.h"
 #include "struct/hit_record.h"
 #include "struct/bounding_record.h"
-#include "hittable/shape/shape.h"
 #include "struct/hit_face_normal.h"
 #include "struct/bounding_record.h"
 #include "struct/texture_coordinate.h"
