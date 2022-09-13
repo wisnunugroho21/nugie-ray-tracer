@@ -387,7 +387,7 @@ hittable_list final_scene() {
 
     objects.add(make_shared<bvh_node>(boxes1));
 
-    auto light = make_shared<diffuse_light>(color(7, 7, 7));
+    auto light = make_shared<diffuse_light>(color(7.0, 7.0, 7.0));
 	auto rect1 = make_shared<xz_rect>(123, 423, 147, 412, 554);
 	objects.add(make_shared<gameobject>(rect1, light));	
 
@@ -423,12 +423,17 @@ hittable_list final_scene() {
 	auto sphere6 = make_shared<sphere>(point3(400,200,400), 100);
 	objects.add(make_shared<gameobject>(sphere6, emat));
 
+	auto pertext = make_shared<noise_texture>(5);
+	auto mat7 = make_shared<lambertian>(pertext);
+	auto sphere7 = make_shared<sphere>(point3(220, 280, 300), 80);
+	objects.add(make_shared<gameobject>(sphere7, mat7));
+
     hittable_list boxes2;
     auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
     int ns = 1000;
     for (int j = 0; j < ns; j++) {
-		auto sphere7 = make_shared<sphere>(point3::random(0, 165), 10);
-		boxes2.add(make_shared<gameobject>(sphere7, white));
+		auto sphere_small = make_shared<sphere>(point3::random(0, 165), 10);
+		boxes2.add(make_shared<gameobject>(sphere_small, white));
     }
 
 	auto node1 = make_shared<bvh_node>(boxes2);
@@ -489,7 +494,7 @@ int main(int argc, char const* argv[]) {
 	auto aperture = 0.0;
 	auto dist_to_focus = 10.0;
 
-	switch (8)
+	switch (7)
 	{
 		case 0:
 			list = random_scenes();
