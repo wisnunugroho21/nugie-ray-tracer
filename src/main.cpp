@@ -13,6 +13,7 @@
 #include "struct/hit_record.h"
 #include "texture/checker.h"
 #include "texture/image_texture.h"
+#include "texture/noise_texture.h"
 #include "hittable/hittable.h"
 #include "hittable/hittable_list.h"
 #include "hittable/bvh.h"
@@ -347,6 +348,21 @@ hittable_list earth() {
     return world;
 }
 
+hittable_list two_perlin_spheres() {
+    hittable_list objects;
+
+    auto pertext = make_shared<noise_texture>(10);
+	auto mat = make_shared<lambertian>(pertext);
+
+	auto sphere1 = make_shared<sphere>(point3(0, -1000, 0), 1000);
+	objects.add(make_shared<gameobject>(sphere1, mat));
+
+	auto sphere2 = make_shared<sphere>(point3(0, 2, 0), 2);
+	objects.add(make_shared<gameobject>(sphere2, mat));
+
+    return objects;
+}
+
 hittable_list final_scene() {
     hittable_list boxes1;
     auto ground = make_shared<lambertian>(color(0.48, 0.83, 0.53));
@@ -390,6 +406,8 @@ hittable_list final_scene() {
 	auto mat4 = make_shared<dielectric>(1.5);
 	auto sphere4 = make_shared<sphere>(point3(360, 150, 145), 70);
 	auto go1 = make_shared<gameobject>(sphere4, mat4);
+	objects.add(go1);
+
 	auto boundry1 = make_shared<constant_medium>(go1, 0.2);
 	auto boundry1_mat = make_shared<isotropic>(color(0.2, 0.4, 0.9));
 	objects.add(make_shared<gameobject>(boundry1, boundry1_mat));
@@ -462,7 +480,7 @@ int main(int argc, char const* argv[]) {
 	int image_height = static_cast<int> (image_width / aspect_ratio);
 
 	hittable_list list;
-	color background;
+	color background(0.7, 0.8, 1.0);
 
 	point3 lookfrom;
 	point3 lookto;
@@ -471,7 +489,7 @@ int main(int argc, char const* argv[]) {
 	auto aperture = 0.0;
 	auto dist_to_focus = 10.0;
 
-	switch (7)
+	switch (8)
 	{
 		case 0:
 			list = random_scenes();
@@ -537,6 +555,14 @@ int main(int argc, char const* argv[]) {
 			vpov = 40.0;
 			aperture = 0.0;
 			break;
+		case 8:
+            list = two_perlin_spheres();
+			background = color(0.7, 0.8, 1.0);
+            lookfrom = point3(13, 2, 3);
+            lookto = point3(0,0,0);
+            vpov = 20.0;
+			aperture = 0.0;
+            break;
 
 		default:
 			break;
