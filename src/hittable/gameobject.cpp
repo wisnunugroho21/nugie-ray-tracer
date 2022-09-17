@@ -10,6 +10,7 @@ hit_record gameobject::hit(ray r, double t_min, double t_max) {
 
     if (hit.is_hit) {
         hit = this->object_material->scatter(r, hit);
+        hit.scattering_pdf = this->object_material->scattering_pdf(r, hit);
         hit.emitted = this->object_material->emitted(hit.u, hit.v, hit.p);
     }
 

@@ -15,9 +15,15 @@ hit_record lambertian::scatter(ray r_in, hit_record hit) {
         scatter_direction = hit.normal;
     }
 
-    hit.scattered = ray(hit.p, scatter_direction);
+    hit.scattered = ray(hit.p, scatter_direction.unit_vector());
     hit.attenuation = this->albedo->value(hit.u, hit.v, hit.p);
+    hit.pdf = dot(hit.normal, hit.scattered.direction()) / pi;
+
     hit.is_scatter = true;
-    
     return hit;
+}
+
+double lambertian::scattering_pdf(ray r_in, hit_record hit) {
+    auto cosine = dot(hit.normal, hit.scattered.direction().unit_vector());
+    return cosine < 0 ? 0 : cosine / pi;
 }

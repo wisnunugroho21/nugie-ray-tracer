@@ -20,4 +20,5 @@ public:
     lambertian(color c);
 
     hit_record scatter(ray r_in, hit_record hit) override;
+    double scattering_pdf(ray r_in, hit_record hit) override;
 };

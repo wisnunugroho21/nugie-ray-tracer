@@ -18,5 +18,8 @@ struct hit_record
     
     ray scattered;
     color attenuation;
-    color emitted; 
+    color emitted;
+
+    double pdf;
+    double scattering_pdf;
 };
