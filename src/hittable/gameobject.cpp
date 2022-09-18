@@ -9,9 +9,7 @@ hit_record gameobject::hit(ray r, double t_min, double t_max) {
     hit_record hit = this->object_shape->hit(r, t_min, t_max);
 
     if (hit.is_hit) {
-        hit = this->object_material->scatter(r, hit);
-        hit.scattering_pdf = this->object_material->scattering_pdf(r, hit);
-        hit.emitted = this->object_material->emitted(hit.u, hit.v, hit.p);
+        hit = this->object_material->texturing(r, hit);
     }
 
     return hit;

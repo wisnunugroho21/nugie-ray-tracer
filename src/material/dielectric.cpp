@@ -27,6 +27,12 @@ vector3 dielectric::refract(vector3 uv, vector3 n, double etai_over_etat) {
     return r_out_perp + r_out_parallel;
 }
 
+double dielectric::reflectance(double cosine, double ref_idx) {
+    double r0 = (1 - ref_idx) / (1 + ref_idx);
+    r0 = r0 * r0;
+    return r0 + (1 - r0) * pow((1 - cosine), 5);
+}
+
 hit_record dielectric::scatter(ray r_in, hit_record hit) {    
     double refraction_ratio = hit.front_face ? (1.0 / ir) : ir;
     vector3 unit_direction = r_in.direction().unit_vector();
@@ -48,10 +54,4 @@ hit_record dielectric::scatter(ray r_in, hit_record hit) {
     hit.attenuation = this->albedo->value(hit.u, hit.v, hit.p);
 
     return hit;
-}
-
-double dielectric::reflectance(double cosine, double ref_idx) {
-    double r0 = (1 - ref_idx) / (1 + ref_idx);
-    r0 = r0 * r0;
-    return r0 + (1 - r0) * pow((1 - cosine), 5);
 }

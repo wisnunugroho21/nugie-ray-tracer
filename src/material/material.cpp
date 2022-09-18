@@ -12,3 +12,10 @@ hit_record material::scatter(ray r_in, hit_record hit) {
 double material::scattering_pdf(ray r_in, hit_record hit) {
     return 0;
 }
+
+hit_record material::texturing(ray r_in, hit_record hit) {
+    hit.emitted = this->emitted(hit.u, hit.v, hit.p);
+    hit.scattering_pdf = this->scattering_pdf(r_in, hit);
+
+    return this->scatter(r_in, hit);
+}
