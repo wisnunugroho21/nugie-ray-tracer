@@ -478,8 +478,8 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 
 int main(int argc, char const* argv[]) {
 
-	int depth = 20;
-	int sample_per_pixel = 50;
+	int depth = 10;
+	int sample_per_pixel = 20;
 	double aspect_ratio = 1.0;
 	int image_width = 400;
 	int image_height = static_cast<int> (image_width / aspect_ratio);
@@ -582,7 +582,7 @@ int main(int argc, char const* argv[]) {
 
 	// ----- Render ----- //
 
-	std::ofstream outfile("image1.ppm");
+	std::ofstream outfile("image2.ppm");
 	outfile << "P3\n" << image_width << " " << image_height << "\n255\n";
 
 	std::cerr << image_height;
