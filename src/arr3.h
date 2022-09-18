@@ -42,6 +42,7 @@ public:
     static arr3 random_unit_vector();
     static arr3 random_in_unit_disk();
     static arr3 random_in_unit_sphere();
+    static arr3 random_cosine_direction();
 };
 
 arr3 operator + (arr3 u, arr3 v);

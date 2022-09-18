@@ -25,6 +25,9 @@
 #include "hittable/transform/translate.h"
 #include "hittable/transform/rotate.h"
 #include "hittable/volumetric/constant_medium.h"
+#include "denoiser/cosine_pdf.h"
+#include "denoiser/hittable_pdf.h"
+#include "denoiser/mixture_pdf.h"
 
 #include <iostream>
 #include <fstream>
@@ -34,10 +37,14 @@ using std::make_shared;
 hittable_list cornell_box() {
 	hittable_list objects;
 
+	auto light_mat = make_shared<diffuse_light>(color(15, 15, 15));
+	auto light_shape = make_shared<xz_rect>(213, 343, 227, 332, 554);
+	auto light = make_shared<gameobject>(light_shape, light_mat);
+	objects.add(light);
+
 	auto red = make_shared<lambertian>(color(0.65, 0.05, 0.05));
 	auto green = make_shared<lambertian>(color(0.12, 0.45, 0.15));
 	auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
-	auto light = make_shared<diffuse_light>(color(15, 15, 15));
 
 	auto rect1 = make_shared<yz_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect1, green));
@@ -45,17 +52,14 @@ hittable_list cornell_box() {
 	auto rect2 = make_shared<yz_rect>(0, 555, 0, 555, 0);
 	objects.add(make_shared<gameobject>(rect2, red));
 
-	auto rect3 = make_shared<xz_rect>(213, 343, 227, 332, 554);
-	objects.add(make_shared<gameobject>(rect3, light));
+	auto rect3 = make_shared<xz_rect>(0, 555, 0, 555, 0);
+	objects.add(make_shared<gameobject>(rect3, white));
 
-	auto rect4 = make_shared<xz_rect>(0, 555, 0, 555, 0);
+	auto rect4 = make_shared<xz_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect4, white));
 
-	auto rect5 = make_shared<xz_rect>(0, 555, 0, 555, 555);
+	auto rect5 = make_shared<xy_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect5, white));
-
-	auto rect6 = make_shared<xy_rect>(0, 555, 0, 555, 555);
-	objects.add(make_shared<gameobject>(rect6, white));
 
 	shared_ptr<hittable> box1 = make_shared<box>(point3(130, 0, 65), point3(295, 165, 230));
 	objects.add(make_shared<gameobject>(box1, white));
@@ -69,10 +73,14 @@ hittable_list cornell_box() {
 hittable_list translate_rotate_cornell_box() {
 	hittable_list objects;
 
+	auto light_mat = make_shared<diffuse_light>(color(15, 15, 15));
+	auto light_shape = make_shared<xz_rect>(213, 343, 227, 332, 554);
+	auto light = make_shared<gameobject>(light_shape, light_mat);
+	objects.add(light);
+
 	auto red = make_shared<lambertian>(color(0.65, 0.05, 0.05));
 	auto green = make_shared<lambertian>(color(0.12, 0.45, 0.15));
 	auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
-	auto light = make_shared<diffuse_light>(color(15, 15, 15));
 
 	auto rect1 = make_shared<yz_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect1, green));
@@ -80,17 +88,14 @@ hittable_list translate_rotate_cornell_box() {
 	auto rect2 = make_shared<yz_rect>(0, 555, 0, 555, 0);
 	objects.add(make_shared<gameobject>(rect2, red));
 
-	auto rect3 = make_shared<xz_rect>(213, 343, 227, 332, 554);
-	objects.add(make_shared<gameobject>(rect3, light));
+	auto rect3 = make_shared<xz_rect>(0, 555, 0, 555, 0);
+	objects.add(make_shared<gameobject>(rect3, white));
 
-	auto rect4 = make_shared<xz_rect>(0, 555, 0, 555, 0);
+	auto rect4 = make_shared<xz_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect4, white));
 
-	auto rect5 = make_shared<xz_rect>(0, 555, 0, 555, 555);
+	auto rect5 = make_shared<xy_rect>(0, 555, 0, 555, 555);
 	objects.add(make_shared<gameobject>(rect5, white));
-
-	auto rect6 = make_shared<xy_rect>(0, 555, 0, 555, 555);
-	objects.add(make_shared<gameobject>(rect6, white));
 
 	shared_ptr<hittable> box1 = make_shared<box>(point3(0, 0, 0), point3(165, 330, 165));
 	box1 = make_shared<rotate_y>(box1, 15.0);
@@ -460,6 +465,15 @@ void write_color(std::ofstream& ofl, color pixel_color, int sample_per_pixel) {
 		<< static_cast<int>(256 * clamp(b, 0, 0.999)) << "\n";
 }
 
+hit_record denoising(hit_record res, shared_ptr<hittable> lights) {
+    hittable_pdf p1(lights, res.p);
+
+    res.scattered = ray(res.p, p1.generate());
+    res.pdf = p1.value(res.scattered.direction());
+
+	return res;
+}
+
 color ray_color(ray r, color background, hittable& world, int depth) {
 	if (depth <= 0)
 		return color(0, 0, 0);
@@ -473,6 +487,7 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 		return res.emitted;
 	}
 
+	// res = denoising(res, lights);
 	return res.emitted + res.attenuation * res.scattering_pdf * ray_color(res.scattered, background, world, depth - 1) / res.pdf;
 }
 
@@ -493,6 +508,8 @@ int main(int argc, char const* argv[]) {
 	auto vpov = 40.0;
 	auto aperture = 0.0;
 	auto dist_to_focus = 10.0;
+
+	shared_ptr<hittable> lights;
 
 	switch (3)
 	{
@@ -582,7 +599,7 @@ int main(int argc, char const* argv[]) {
 
 	// ----- Render ----- //
 
-	std::ofstream outfile("image2.ppm");
+	std::ofstream outfile("image6.ppm");
 	outfile << "P3\n" << image_width << " " << image_height << "\n255\n";
 
 	std::cerr << image_height;

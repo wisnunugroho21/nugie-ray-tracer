@@ -20,4 +20,7 @@ public:
     hit_record hit(ray r, double t_min, double t_max) override;
     bounding_record bounding_box() override;
     texture_coordinate get_uv(double x, double z);
+
+    double pdf_value(point3 o, vector3 v) override;
+    vector3 random(vector3 o) override;
 };

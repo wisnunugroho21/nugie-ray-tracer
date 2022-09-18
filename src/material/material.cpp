@@ -16,6 +16,11 @@ double material::scattering_pdf(ray r_in, hit_record hit) {
 hit_record material::texturing(ray r_in, hit_record hit) {
     hit = this->scatter(r_in, hit);
 
+    cosine_pdf p1(hit.normal);
+
+    hit.scattered = ray(hit.p, p1.generate());
+    hit.pdf = p1.value(hit.scattered.direction());
+
     hit.emitted = this->emitted(hit.u, hit.v, hit.p);
     hit.scattering_pdf = this->scattering_pdf(r_in, hit);
 

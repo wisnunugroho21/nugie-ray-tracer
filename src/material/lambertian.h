@@ -7,6 +7,7 @@
 #include "struct/scattered_record.h"
 #include "texture/solid_color.h"
 #include "texture/texture.h"
+#include "denoiser/onb.h"
 
 using namespace std;
 
