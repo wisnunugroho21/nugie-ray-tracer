@@ -14,11 +14,11 @@ using namespace std;
 class isotropic : public material
 {
 private:
-    shared_ptr<texture> albedo;
+	shared_ptr<texture> albedo;
 
 public:
-    isotropic(shared_ptr<texture> albedo);
-    isotropic(color c);
+	isotropic(shared_ptr<texture> albedo);
+	isotropic(color c);
 
-    hit_record scatter(ray r_in, hit_record hit) override;
+	hit_record scatter(ray r_in, hit_record hit) override;
 };

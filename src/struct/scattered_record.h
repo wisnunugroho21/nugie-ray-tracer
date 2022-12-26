@@ -4,7 +4,7 @@
 #include "ray.h"
 
 struct scattered_record {
-    bool is_scatter = false;
-    color attenuation;
-    ray scattered;
+	bool is_scatter = false;
+	color attenuation;
+	ray scattered;
 };

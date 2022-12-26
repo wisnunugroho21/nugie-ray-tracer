@@ -8,12 +8,12 @@
 class noise_texture : public texture
 {
 private:
-    std::shared_ptr<perlin> noise;
-    double scale;
+	std::shared_ptr<perlin> noise;
+	double scale;
     
 public:
-    noise_texture();
-    noise_texture(double scale);
+	noise_texture();
+	noise_texture(double scale);
 
-    color value(double u, double v, point3 p) override;
+	color value(double u, double v, point3 p) override;
 };

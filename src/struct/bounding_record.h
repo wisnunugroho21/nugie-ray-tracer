@@ -4,6 +4,6 @@
 
 struct bounding_record
 {
-    bool is_hit = false;
-    aabb bounding_box;
+	bool is_hit = false;
+	aabb bounding_box;
 };

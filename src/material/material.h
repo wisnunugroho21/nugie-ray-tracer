@@ -6,9 +6,9 @@
 class material
 {
 protected:
-    virtual color emitted(double u, double v, point3 p);
-    virtual hit_record scatter(ray r_in, hit_record hit);
+	virtual color emitted(double u, double v, point3 p);
+	virtual hit_record scatter(ray r_in, hit_record hit);
 
 public:
-    virtual hit_record texturing(ray r_in, hit_record hit);
+	virtual hit_record texturing(ray r_in, hit_record hit);
 };

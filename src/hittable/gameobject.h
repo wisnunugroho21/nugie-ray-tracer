@@ -15,12 +15,12 @@ using std::shared_ptr;
 class gameobject : public hittable
 {
 private:
-    shared_ptr<hittable> object_shape;
-    shared_ptr<material> object_material;
+	shared_ptr<hittable> object_shape;
+	shared_ptr<material> object_material;
 
 public:
-    gameobject(shared_ptr<hittable> object_shape, shared_ptr<material> object_material);
+	gameobject(shared_ptr<hittable> object_shape, shared_ptr<material> object_material);
 
-    hit_record hit(ray r, double t_min, double t_max) override;
-    bounding_record bounding_box() override;
+	hit_record hit(ray r, double t_min, double t_max) override;
+	bounding_record bounding_box() override;
 };

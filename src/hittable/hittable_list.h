@@ -15,16 +15,16 @@ using std::vector;
 class hittable_list : public hittable
 {
 private:
-    vector<shared_ptr<hittable>> objects;
+	vector<shared_ptr<hittable>> objects;
     
 public:
-    hittable_list();
-    hittable_list(shared_ptr<hittable> object);
+	hittable_list();
+	hittable_list(shared_ptr<hittable> object);
 
-    void clear();
-    void add(shared_ptr<hittable> object);
-    vector<shared_ptr<hittable>> getAll();
+	void clear();
+	void add(shared_ptr<hittable> object);
+	vector<shared_ptr<hittable>> getAll();
 
-    hit_record hit(ray r, double t_min, double t_max) override;
-    bounding_record bounding_box() override;
+	hit_record hit(ray r, double t_min, double t_max) override;
+	bounding_record bounding_box() override;
 };

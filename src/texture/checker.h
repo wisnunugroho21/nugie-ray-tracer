@@ -12,12 +12,12 @@ using namespace std;
 class checker : public texture
 {
 private:
-    shared_ptr<solid_color> even;
-    shared_ptr<solid_color> odd;
+	shared_ptr<solid_color> even;
+	shared_ptr<solid_color> odd;
 
 public:
-    checker(shared_ptr<solid_color> first_color, shared_ptr<solid_color> second_color);
-    checker(solid_color first_color, solid_color second_color);
+	checker(shared_ptr<solid_color> first_color, shared_ptr<solid_color> second_color);
+	checker(solid_color first_color, solid_color second_color);
 
-    color value(double u, double v, point3 p) override;
+	color value(double u, double v, point3 p) override;
 };

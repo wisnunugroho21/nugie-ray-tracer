@@ -13,11 +13,11 @@ using namespace std;
 class diffuse_light : public material
 {
 private:
-    shared_ptr<texture> emit;
+	shared_ptr<texture> emit;
 
 public:
-    diffuse_light(shared_ptr<texture> emit);
-    diffuse_light(color c);
+	diffuse_light(shared_ptr<texture> emit);
+	diffuse_light(color c);
 
-    color emitted(double u, double v, point3 p) override;
+	color emitted(double u, double v, point3 p) override;
 };

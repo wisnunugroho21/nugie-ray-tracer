@@ -1,8 +1,5 @@
 #include "translate.h"
 
-translate::translate() {
-}
-
 translate::translate(shared_ptr<hittable> object, vector3 offset) {
 	this->object = object;
 	this->offset = offset;

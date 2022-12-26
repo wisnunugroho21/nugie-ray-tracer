@@ -5,5 +5,5 @@
 class texture
 {
 public:
-    virtual color value(double u, double v, point3 p) = 0;
+	virtual color value(double u, double v, point3 p) = 0;
 };

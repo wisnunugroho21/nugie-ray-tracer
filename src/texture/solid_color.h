@@ -6,11 +6,11 @@
 class solid_color : public texture
 {
 private:
-    color color_value;
+	color color_value;
 
 public:
-    solid_color(color c);
-    solid_color(double r, double g, double b) : solid_color(color(r, g, b)) {}
+	solid_color(color c);
+	solid_color(double r, double g, double b) : solid_color(color(r, g, b)) {}
 
-    color value(double u, double v, point3 p) override;
+	color value(double u, double v, point3 p) override;
 };

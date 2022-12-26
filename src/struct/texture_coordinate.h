@@ -2,6 +2,6 @@
 
 struct texture_coordinate
 {
-    double u;
-    double v;
+	double u;
+	double v;
 };

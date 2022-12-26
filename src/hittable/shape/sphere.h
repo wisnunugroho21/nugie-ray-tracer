@@ -15,14 +15,14 @@ using std::shared_ptr;
 class sphere : public hittable
 {
 private:
-    point3 center;
-    double radius;
+	point3 center;
+	double radius;
 
 public:
-    sphere();
-    sphere(point3 center, double radius);
+	sphere() {};
+	sphere(point3 center, double radius);
 
-    hit_record hit(ray r, double t_min, double t_max) override;
-    bounding_record bounding_box() override;
-    texture_coordinate get_uv(point3 p);
+	hit_record hit(ray r, double t_min, double t_max) override;
+	bounding_record bounding_box() override;
+	texture_coordinate get_uv(point3 p);
 };

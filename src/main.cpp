@@ -478,10 +478,10 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 
 int main(int argc, char const* argv[]) {
 
-	int depth = 10;
-	int sample_per_pixel = 20;
+	int depth = 30;
+	int sample_per_pixel = 100;
 	double aspect_ratio = 1.0;
-	int image_width = 400;
+	int image_width = 500;
 	int image_height = static_cast<int> (image_width / aspect_ratio);
 
 	hittable_list list;
@@ -494,7 +494,7 @@ int main(int argc, char const* argv[]) {
 	auto aperture = 0.0;
 	auto dist_to_focus = 10.0;
 
-	switch (3)
+	switch (7)
 	{
 		case 0:
 			list = random_scenes();
@@ -561,13 +561,13 @@ int main(int argc, char const* argv[]) {
 			aperture = 0.0;
 			break;
 		case 8:
-            list = two_perlin_spheres();
+			list = two_perlin_spheres();
 			background = color(0.7, 0.8, 1.0);
-            lookfrom = point3(13, 2, 3);
-            lookto = point3(0,0,0);
-            vpov = 20.0;
+			lookfrom = point3(13, 2, 3);
+			lookto = point3(0,0,0);
+			vpov = 20.0;
 			aperture = 0.0;
-            break;
+			break;
 
 		default:
 			break;
@@ -582,7 +582,7 @@ int main(int argc, char const* argv[]) {
 
 	// ----- Render ----- //
 
-	std::ofstream outfile("image1.ppm");
+	std::ofstream outfile("image2.ppm");
 	outfile << "P3\n" << image_width << " " << image_height << "\n255\n";
 
 	std::cerr << image_height;

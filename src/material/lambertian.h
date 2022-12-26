@@ -13,11 +13,11 @@ using namespace std;
 class lambertian : public material
 {
 private:
-    shared_ptr<texture> albedo;
+	shared_ptr<texture> albedo;
 
 public:
-    lambertian(shared_ptr<texture> albedo);
-    lambertian(color c);
+	lambertian(shared_ptr<texture> albedo);
+	lambertian(color c);
 
-    hit_record scatter(ray r_in, hit_record hit) override;
+	hit_record scatter(ray r_in, hit_record hit) override;
 };

@@ -16,19 +16,19 @@ using std::make_shared;
 class rotate_y : public hittable
 {
 private:
-    shared_ptr<hittable> object;
+	shared_ptr<hittable> object;
 
-    double sin_theta;
-    double cos_theta;
+	double sin_theta;
+	double cos_theta;
 
-    bool hasBox;
-    aabb bbox;
+	bool hasBox;
+	aabb bbox;
 
 
 public:
-    rotate_y();
-    rotate_y(shared_ptr<hittable> object, double angle);
+	rotate_y() {};
+	rotate_y(shared_ptr<hittable> object, double angle);
 
-    hit_record hit(ray r, double t_min, double t_max) override;
-    bounding_record bounding_box() override;
+	hit_record hit(ray r, double t_min, double t_max) override;
+	bounding_record bounding_box() override;
 };
