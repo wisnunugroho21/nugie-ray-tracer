@@ -345,13 +345,13 @@ hittable_list earth() {
 	shared_ptr<hittable> shp_ground = make_shared<sphere>(point3(0,0,0), 2);
 	world.add(make_shared<gameobject>(shp_ground, mat_ground));
 
-    return world;
+	return world;
 }
 
 hittable_list two_perlin_spheres() {
-    hittable_list objects;
+	hittable_list objects;
 
-    auto pertext = make_shared<noise_texture>(10);
+	auto pertext = make_shared<noise_texture>(10);
 	auto mat = make_shared<lambertian>(pertext);
 
 	auto sphere1 = make_shared<sphere>(point3(0, -1000, 0), 1000);
@@ -360,38 +360,38 @@ hittable_list two_perlin_spheres() {
 	auto sphere2 = make_shared<sphere>(point3(0, 2, 0), 2);
 	objects.add(make_shared<gameobject>(sphere2, mat));
 
-    return objects;
+	return objects;
 }
 
 hittable_list final_scene() {
-    hittable_list boxes1;
-    auto ground = make_shared<lambertian>(color(0.48, 0.83, 0.53));
+	hittable_list boxes1;
+	auto ground = make_shared<lambertian>(color(0.48, 0.83, 0.53));
 
-    const int boxes_per_side = 20;
-    for (int i = 0; i < boxes_per_side; i++) {
-        for (int j = 0; j < boxes_per_side; j++) {
-            auto w = 100.0;
-            auto x0 = -1000.0 + i*w;
-            auto z0 = -1000.0 + j*w;
-            auto y0 = 0.0;
-            auto x1 = x0 + w;
-            auto y1 = random_double(1,101);
-            auto z1 = z0 + w;
+	const int boxes_per_side = 20;
+	for (int i = 0; i < boxes_per_side; i++) {
+		for (int j = 0; j < boxes_per_side; j++) {
+			auto w = 100.0;
+			auto x0 = -1000.0 + i*w;
+			auto z0 = -1000.0 + j*w;
+			auto y0 = 0.0;
+			auto x1 = x0 + w;
+			auto y1 = random_double(1,101);
+			auto z1 = z0 + w;
 
 			auto box1 = make_shared<box>(point3(x0,y0,z0), point3(x1,y1,z1));
 			boxes1.add(make_shared<gameobject>(box1, ground));
-        }
-    }
+		}
+	}
 
-    hittable_list objects;
+	hittable_list objects;
 
-    objects.add(make_shared<bvh_node>(boxes1));
+	objects.add(make_shared<bvh_node>(boxes1));
 
-    auto light = make_shared<diffuse_light>(color(7.0, 7.0, 7.0));
+	auto light = make_shared<diffuse_light>(color(7.0, 7.0, 7.0));
 	auto rect1 = make_shared<xz_rect>(123, 423, 147, 412, 554);
 	objects.add(make_shared<gameobject>(rect1, light));	
 
-    auto mat1 = make_shared<lambertian>(color(0.7, 0.3, 0.1));
+	auto mat1 = make_shared<lambertian>(color(0.7, 0.3, 0.1));
 	auto sphere1 = make_shared<sphere>(point3(400, 400, 200), 50);
 	objects.add(make_shared<gameobject>(sphere1, mat1));
 
@@ -428,20 +428,20 @@ hittable_list final_scene() {
 	auto sphere7 = make_shared<sphere>(point3(220, 280, 300), 80);
 	objects.add(make_shared<gameobject>(sphere7, mat7));
 
-    hittable_list boxes2;
-    auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
-    int ns = 1000;
-    for (int j = 0; j < ns; j++) {
+	hittable_list boxes2;
+	auto white = make_shared<lambertian>(color(0.73, 0.73, 0.73));
+	int ns = 1000;
+	for (int j = 0; j < ns; j++) {
 		auto sphere_small = make_shared<sphere>(point3::random(0, 165), 10);
 		boxes2.add(make_shared<gameobject>(sphere_small, white));
-    }
+	}
 
 	auto node1 = make_shared<bvh_node>(boxes2);
 	auto translate1 = make_shared<translate>(node1, vector3(-100, 270, 395));
 	auto rotate1 = make_shared<rotate_y>(translate1, 15);
 	objects.add(rotate1);
 
-    return objects;
+  return objects;
 }
 
 void write_color(std::ofstream& ofl, color pixel_color, int sample_per_pixel) {
