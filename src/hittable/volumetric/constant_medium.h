@@ -3,7 +3,7 @@
 #include "arr3.h"
 #include "hittable/hittable.h"
 #include "texture/texture.h"
-#include "struct/hit_face_normal.h"
+#include "struct/face_normal.h"
 #include "helper/helper.h"
 
 #include <memory>

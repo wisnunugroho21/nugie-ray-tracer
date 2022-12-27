@@ -61,7 +61,7 @@ hit_record rotate_y::hit(ray r, double t_min, double t_max) {
 		normal[2] = -1 * this->sin_theta * hit.face_normal.normal[0] + this->cos_theta * hit.face_normal.normal[2];		
 		
 		hit.p = p;
-		hit.face_normal = hit_face_normal::set_hit_face_normal(rotated_r, normal);
+		hit.face_normal = face_normal::set_face_normal(rotated_r, normal);
 	}
 
 	return hit;

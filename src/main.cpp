@@ -478,8 +478,8 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 
 int main(int argc, char const* argv[]) {
 
-	int depth = 30;
-	int sample_per_pixel = 100;
+	int depth = 50;
+	int sample_per_pixel = 50;
 	double aspect_ratio = 1.0;
 	int image_width = 500;
 	int image_height = static_cast<int> (image_width / aspect_ratio);
@@ -494,7 +494,7 @@ int main(int argc, char const* argv[]) {
 	auto aperture = 0.0;
 	auto dist_to_focus = 10.0;
 
-	switch (7)
+	switch (3)
 	{
 		case 0:
 			list = random_scenes();
@@ -581,8 +581,7 @@ int main(int argc, char const* argv[]) {
 	camera cam = camera(lookfrom, lookto, vup, vpov, aspect_ratio, aperture, dist_to_focus);
 
 	// ----- Render ----- //
-
-	std::ofstream outfile("image2.ppm");
+	std::ofstream outfile("image.ppm");
 	outfile << "P3\n" << image_width << " " << image_height << "\n255\n";
 
 	std::cerr << image_height;

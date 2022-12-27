@@ -10,7 +10,7 @@ hit_record translate::hit(ray r, double t_min, double t_max) {
 	hit_record hit = this->object->hit(moved_r, t_min, t_max);
 
 	if (hit.is_hit) {		
-		hit.face_normal = hit_face_normal::set_hit_face_normal(moved_r, hit.face_normal.normal);
+		hit.face_normal = face_normal::set_face_normal(moved_r, hit.face_normal.normal);
 		hit.p += this->offset;
 	}
 

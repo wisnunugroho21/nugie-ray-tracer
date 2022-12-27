@@ -6,7 +6,7 @@
 #include "hittable/hittable.h"
 #include "struct/hit_record.h"
 #include "struct/bounding_record.h"
-#include "struct/hit_face_normal.h"
+#include "struct/face_normal.h"
 #include "struct/bounding_record.h"
 #include "struct/texture_coordinate.h"
 

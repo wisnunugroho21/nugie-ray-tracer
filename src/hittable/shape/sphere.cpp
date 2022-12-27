@@ -37,7 +37,7 @@ hit_record sphere::hit(ray r, double t_min, double t_max) {
 
 		vector3 outward_normal = (hit.p - this->center) / this->radius;
 
-		hit.face_normal = hit_face_normal::set_hit_face_normal(r, outward_normal);
+		hit.face_normal = face_normal::set_face_normal(r, outward_normal);
 		hit.text_coord = this->get_uv(hit.face_normal.normal);
 	}
 

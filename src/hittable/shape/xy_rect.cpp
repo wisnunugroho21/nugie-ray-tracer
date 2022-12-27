@@ -30,7 +30,7 @@ hit_record xy_rect::hit(ray r, double t_min, double t_max) {
 
 		vector3 outward_normal = vector3(0, 0, 1);
 
-		hit.face_normal = hit_face_normal::set_hit_face_normal(r, outward_normal);
+		hit.face_normal = face_normal::set_face_normal(r, outward_normal);
 		hit.text_coord = this->get_uv(x, y);
 	}
 
