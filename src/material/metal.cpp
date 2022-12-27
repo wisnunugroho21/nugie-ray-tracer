@@ -15,11 +15,11 @@ vector3 metal::reflect(vector3 v, vector3 n) {
 }
 
 hit_record metal::scatter(ray r_in, hit_record hit) {
-	point3 reflected = this->reflect(r_in.direction().unit_vector(), hit.normal);
+	point3 reflected = this->reflect(r_in.direction().unit_vector(), hit.face_normal.normal);
 
-	hit.scattered = ray(hit.p, reflected + this->fuzz * vector3::random_unit_length());
-	hit.attenuation = this->albedo->value(hit.u, hit.v, hit.p);
-	hit.is_scatter = (dot(reflected, hit.normal) > 0);
+	hit.scattered.r = ray(hit.p, reflected + this->fuzz * vector3::random_unit_length());
+	hit.scattered.attenuation = this->albedo->value(hit.text_coord.u, hit.text_coord.v, hit.p);
+	hit.scattered.is_scatter = (dot(reflected, hit.face_normal.normal) > 0);
 	
 	return hit;
 }

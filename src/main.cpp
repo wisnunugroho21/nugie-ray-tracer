@@ -469,11 +469,11 @@ color ray_color(ray r, color background, hittable& world, int depth) {
 		return background;
 	}
 
-	if (!res.is_scatter) {
-		return res.emitted;
+	if (!res.scattered.is_scatter) {
+		return res.emitted.clr;
 	}
 
-	return res.emitted + res.attenuation * ray_color(res.scattered, background, world, depth - 1);
+	return res.emitted.clr + res.scattered.attenuation * ray_color(res.scattered.r, background, world, depth - 1);
 }
 
 int main(int argc, char const* argv[]) {

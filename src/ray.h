@@ -1,7 +1,6 @@
 #pragma once
 
 #include "arr3.h"
-#include "struct/hit_face_normal.h"
 
 class ray
 {
@@ -17,6 +16,4 @@ public:
 	vector3 direction();
 
 	vector3 at(double t);
-
-	static hit_face_normal set_hit_face_normal(ray r, vector3 hit_normal);
 };

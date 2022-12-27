@@ -5,11 +5,11 @@ color material::emitted(double u, double v, point3 p) {
 }
 
 hit_record material::scatter(ray r_in, hit_record hit) {
-	hit.is_scatter = false;
+	hit.scattered.is_scatter = false;
 	return hit;
 }
 
 hit_record material::texturing(ray r_in, hit_record hit) {
-	hit.emitted = this->emitted(hit.u, hit.v, hit.p);
+	hit.emitted.clr = this->emitted(hit.text_coord.u, hit.text_coord.v, hit.p);
 	return this->scatter(r_in, hit);
 }

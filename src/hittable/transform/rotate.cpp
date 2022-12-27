@@ -52,19 +52,16 @@ hit_record rotate_y::hit(ray r, double t_min, double t_max) {
 	hit_record hit = this->object->hit(rotated_r, t_min, t_max);
 	if (hit.is_hit) {
 		auto p = hit.p;
-		auto normal = hit.normal;
+		auto normal = hit.face_normal.normal;
 
 		p[0] = this->cos_theta * hit.p[0] + this->sin_theta * hit.p[2];
 		p[2] = -1 * this->sin_theta * hit.p[0] + this->cos_theta * hit.p[2];
 
-		normal[0] = this->cos_theta * hit.normal[0] + this->sin_theta * hit.normal[2];
-		normal[2] = -1 * this->sin_theta * hit.normal[0] + this->cos_theta * hit.normal[2];		
-
-		hit_face_normal hitted_ray = ray::set_hit_face_normal(rotated_r, normal);
-
+		normal[0] = this->cos_theta * hit.face_normal.normal[0] + this->sin_theta * hit.face_normal.normal[2];
+		normal[2] = -1 * this->sin_theta * hit.face_normal.normal[0] + this->cos_theta * hit.face_normal.normal[2];		
+		
 		hit.p = p;
-		hit.front_face = hitted_ray.front_face;
-		hit.normal = hitted_ray.normal;
+		hit.face_normal = hit_face_normal::set_hit_face_normal(rotated_r, normal);
 	}
 
 	return hit;

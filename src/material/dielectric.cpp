@@ -34,24 +34,24 @@ double dielectric::reflectance(double cosine, double ref_idx) {
 }
 
 hit_record dielectric::scatter(ray r_in, hit_record hit) {    
-	double refraction_ratio = hit.front_face ? (1.0 / ir) : ir;
+	double refraction_ratio = hit.face_normal.front_face ? (1.0 / ir) : ir;
 	vector3 unit_direction = r_in.direction().unit_vector();
 
-	double cost_theta = fmin(dot(-unit_direction, hit.normal), 1.0);
+	double cost_theta = fmin(dot(-unit_direction, hit.face_normal.normal), 1.0);
 	double sin_theta = sqrt(1.0 - cost_theta * cost_theta);
 
 	bool cannot_refract = refraction_ratio * sin_theta > 1.0;
 	vector3 direction;
 
 	if (cannot_refract || this->reflectance(cost_theta, refraction_ratio) > random_double()) {
-			direction = this->reflect(unit_direction, hit.normal);
+			direction = this->reflect(unit_direction, hit.face_normal.normal);
 	} else {
-			direction = this->refract(unit_direction, hit.normal, refraction_ratio);
+			direction = this->refract(unit_direction, hit.face_normal.normal, refraction_ratio);
 	}
 
-	hit.scattered = ray(hit.p, direction);
-	hit.is_scatter = true;
-	hit.attenuation = this->albedo->value(hit.u, hit.v, hit.p);
+	hit.scattered.r = ray(hit.p, direction);
+	hit.scattered.is_scatter = true;
+	hit.scattered.attenuation = this->albedo->value(hit.text_coord.u, hit.text_coord.v, hit.p);
 
 	return hit;
 }

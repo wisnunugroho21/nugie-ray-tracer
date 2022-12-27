@@ -9,15 +9,15 @@ lambertian::lambertian(color c) {
 }
 
 hit_record lambertian::scatter(ray r_in, hit_record hit) {
-	point3 scatter_direction = hit.normal + arr3::random_unit_vector();
+	point3 scatter_direction = hit.face_normal.normal + arr3::random_unit_vector();
 
 	if (scatter_direction.near_zero()) {
-		scatter_direction = hit.normal;
+		scatter_direction = hit.face_normal.normal;
 	}
 
-	hit.scattered = ray(hit.p, scatter_direction);
-	hit.attenuation = this->albedo->value(hit.u, hit.v, hit.p);
-	hit.is_scatter = true;
+	hit.scattered.r = ray(hit.p, scatter_direction);
+	hit.scattered.attenuation = this->albedo->value(hit.text_coord.u, hit.text_coord.v, hit.p);
+	hit.scattered.is_scatter = true;
 	
 	return hit;
 }

@@ -33,8 +33,8 @@ hit_record constant_medium::hit(ray r, double t_min, double t_max) {
     rec_res.t = rec1.t + hit_distance / ray_length;
     rec_res.p = r.at(rec_res.t);
 
-    rec_res.normal = arr3(1.0, 0.0, 0.0);
-    rec_res.front_face = true;
+    rec_res.face_normal.normal = arr3(1.0, 0.0, 0.0);
+    rec_res.face_normal.front_face = true;
     rec_res.is_hit = true;
 
     return rec_res;

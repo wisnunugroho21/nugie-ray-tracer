@@ -30,14 +30,8 @@ hit_record yz_rect::hit(ray r, double t_min, double t_max) {
 
         vector3 outward_normal = vector3(1, 0, 0);
 
-        hit_face_normal hitted_ray = ray::set_hit_face_normal(r, outward_normal);
-        texture_coordinate txc = this->get_uv(y, z);
-
-        hit.front_face = hitted_ray.front_face;
-        hit.normal = hitted_ray.normal;
-
-        hit.u = txc.u;
-        hit.v = txc.v;
+        hit.face_normal = hit_face_normal::set_hit_face_normal(r, outward_normal);
+        hit.text_coord = this->get_uv(y, z);
     }
 
     return hit;

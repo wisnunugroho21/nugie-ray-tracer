@@ -6,5 +6,5 @@
 struct scattered_record {
 	bool is_scatter = false;
 	color attenuation;
-	ray scattered;
+	ray r;
 };
